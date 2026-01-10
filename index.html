@@ -191,6 +191,16 @@
             0% { transform: translate(0, 0); }
             100% { transform: translate(-100%, 0); }
         }
+        
+        /* Share Button Animation */
+        .click-pulse {
+            animation: clickPulse 0.3s ease-out;
+        }
+        @keyframes clickPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center relative p-4 overflow-y-auto py-8 lg:py-0">
@@ -230,10 +240,12 @@
 
                     <!-- Song Info -->
                     <div class="w-full space-y-1 lg:space-y-2">
+                        <!-- Artist Name -->
                         <div class="w-full text-center lg:text-left">
                             <p id="track-artist" class="text-xl text-gray-400 font-medium truncate uppercase tracking-wide">VIBE 24</p>
                         </div>
 
+                        <!-- Song Title -->
                         <div class="w-full relative flex items-center justify-center lg:justify-start">
                             <h2 id="track-title" class="text-2xl md:text-3xl font-extrabold text-white text-center lg:text-left leading-tight line-clamp-2 transition-all duration-300 tracking-tight">
                                 MUSIC STATION
@@ -245,8 +257,7 @@
                             <div class="flex items-center gap-2 text-sm text-gray-300 bg-vibe-grey py-1.5 px-4 rounded-md w-full max-w-sm lg:max-w-md border-l-4 border-vibe-red overflow-hidden">
                                 <span class="text-vibe-red font-bold whitespace-nowrap flex-shrink-0 z-10 font-montserrat">NEXT:</span>
                                 <div class="marquee-container w-full h-6 flex items-center">
-                                    <span class="marquee-content font-medium" style="animation-duration: 12s;">
-                                        <!-- Direct Script Embed for Next Song -->
+                                    <span id="next-song-display" class="marquee-content font-medium" style="animation-duration: 12s;">
                                         <script src="https://embed.radio.co/embed/sbf4f79825/next.js"></script>
                                     </span>
                                 </div>
@@ -277,11 +288,24 @@
                             </div>
                         </div>
 
+                        <!-- Volume & Share Row -->
                         <div class="w-full flex items-center gap-3 px-4 lg:px-0 max-w-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                             </svg>
-                            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.8" class="w-full h-2 rounded-lg appearance-none cursor-pointer" style="background: #333;">
+                            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.8" class="w-full h-2 rounded-lg appearance-none cursor-pointer flex-1" style="background: #333;">
+                            
+                            <!-- Share Button -->
+                            <button id="share-btn" class="ml-2 text-gray-400 hover:text-vibe-red transition-all duration-200 p-2 rounded-full hover:bg-white/10" title="แชร์เพลงนี้">
+                                <!-- Share Icon -->
+                                <svg id="icon-share" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                                </svg>
+                                <!-- Copied/Success Icon (Hidden by default) -->
+                                <svg id="icon-copied" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -356,7 +380,7 @@
             const urls = {
                 stream: `https://streaming.radio.co/${STATION_ID}/listen`,
                 status: `https://public.radio.co/stations/${STATION_ID}/status`,
-                // nextScript is now used directly in HTML, so removed from here to clean up
+                nextScript: `https://embed.radio.co/embed/${STATION_ID}/next.js`
             };
             const defaultArtwork = "https://img2.pic.in.th/1000074512.png";
 
@@ -368,7 +392,7 @@
             const artworkImage = document.getElementById('artwork-image');
             const trackArtistEl = document.getElementById('track-artist');
             const trackTitleEl = document.getElementById('track-title');
-            // nextSongDisplayEl removed as we don't manipulate it with JS anymore
+            
             const djImageEl = document.getElementById('dj-image');
             const djNameEl = document.getElementById('dj-name');
             const djTimeEl = document.getElementById('dj-time');
@@ -377,7 +401,57 @@
                 document.getElementById('dj-status-badge-mobile')
             ];
 
+            // Share Button Elements
+            const shareBtn = document.getElementById('share-btn');
+            const iconShare = document.getElementById('icon-share');
+            const iconCopied = document.getElementById('icon-copied');
+
             let isPlaying = false;
+
+            // --- Share Functionality ---
+            shareBtn.addEventListener('click', async () => {
+                // Add simple animation
+                shareBtn.classList.add('click-pulse');
+                setTimeout(() => shareBtn.classList.remove('click-pulse'), 300);
+
+                const artist = trackArtistEl.textContent.trim();
+                const title = trackTitleEl.textContent.trim();
+                // Construct text
+                const shareText = `🎵 กำลังฟัง: ${title} - ${artist} ที่ VIBE 24`;
+                const shareUrl = window.location.href;
+
+                // 1. Try Native Share (Mobile)
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: 'VIBE 24 Music Station',
+                            text: shareText,
+                            url: shareUrl
+                        });
+                        return; // Success
+                    } catch (err) {
+                        console.log('User cancelled share or API error', err);
+                    }
+                } 
+                
+                // 2. Fallback: Copy to Clipboard (Desktop)
+                try {
+                    await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+                    
+                    // Show success state
+                    iconShare.classList.add('hidden');
+                    iconCopied.classList.remove('hidden');
+                    
+                    // Revert after 2 seconds
+                    setTimeout(() => {
+                        iconShare.classList.remove('hidden');
+                        iconCopied.classList.add('hidden');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Copy failed', err);
+                    alert('ไม่สามารถคัดลอกลิงก์ได้');
+                }
+            });
 
             // --- DJ Logic ---
             function updateDJCard() {
