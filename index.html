@@ -354,19 +354,13 @@
                         <!-- Gradient Overlay (Desktop) -->
                         <div class="hidden lg:block absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                         
-                        <!-- Status Badge (Desktop) -->
-                        <div class="hidden lg:block absolute top-4 right-4 z-10">
-                            <span id="dj-status-badge-desktop" class="text-xs font-bold px-3 py-1 rounded-sm bg-gray-600 text-white shadow-lg backdrop-blur-sm font-montserrat">OFF AIR</span>
-                        </div>
+                        <!-- REMOVED: Desktop Status Badge (ON AIR/OFF AIR) -->
                     </div>
 
                     <!-- Content -->
                     <div class="flex-1 p-4 flex flex-col justify-center lg:absolute lg:bottom-0 lg:left-0 lg:w-full lg:p-6 lg:justify-end z-10 relative bg-gradient-to-r from-vibe-darkgrey to-transparent lg:bg-none">
                         
-                        <!-- Status Badge (Mobile - Top Right of Content) -->
-                        <div class="lg:hidden absolute top-3 right-3 z-10">
-                            <span id="dj-status-badge-mobile" class="text-[10px] font-bold px-2 py-1 rounded-sm bg-gray-600 text-white shadow-lg backdrop-blur-sm font-montserrat">OFF AIR</span>
-                        </div>
+                        <!-- REMOVED: Mobile Status Badge (ON AIR/OFF AIR) -->
 
                         <h3 id="dj-name" class="font-bold text-xl lg:text-4xl text-white leading-tight lg:leading-none tracking-tight mb-1 lg:mb-2 drop-shadow-lg line-clamp-1 lg:line-clamp-none pr-14 lg:pr-0">VIBE 24</h3>
                         
@@ -433,9 +427,24 @@
             const STATION_ID = "sbf4f79825"; 
             
             const djSchedule = [
-                { day: 6, start: 9, end: 15, name: "DJ KRIT", timeLabel: "SAT 09.00-15.00", image: "https://lh3.googleusercontent.com/d/1c7-F8m-Q51qCx7oRLSa6zYhXsKKVAocA" },
-                { day: 0, start: 9, end: 15, name: "DJ KRIT", timeLabel: "SUN 09.00-15.00", image: "https://lh3.googleusercontent.com/d/1c7-F8m-Q51qCx7oRLSa6zYhXsKKVAocA" },
-                { day: 6, start: 15, end: 19, name: "DJ MAN", timeLabel: "SAT 15.00-19.00", image: "https://lh3.googleusercontent.com/d/1ZQLeVFc6S4ARJwLdlcFS-yyPPwQGzV8M" }
+                // DJ KRIT (MON-FRI) 09:00 - 15:00
+                { 
+                    days: [1, 0], // 1=Mon ... 5=Fri
+                    start: 9, 
+                    end: 15, 
+                    name: "DJ KRIT", 
+                    timeLabel: "SAT-SUN 09.00-15.00", 
+                    image: "https://lh3.googleusercontent.com/d/1c7-F8m-Q51qCx7oRLSa6zYhXsKKVAocA" 
+                },
+                // DJ MAN (SAT) 15:00 - 19:00
+                { 
+                    days: [0], // 6=Sat
+                    start: 15, 
+                    end: 19, 
+                    name: "DJ MAN", 
+                    timeLabel: "SAT 15.00-19.00", 
+                    image: "https://lh3.googleusercontent.com/d/1ZQLeVFc6S4ARJwLdlcFS-yyPPwQGzV8M" 
+                }
             ];
             const defaultDJ = { name: "VIBE 24", timeLabel: "Hits 24 Hours", image: "https://img2.pic.in.th/1000074512.png" };
 
@@ -458,10 +467,8 @@
             const djImageEl = document.getElementById('dj-image');
             const djNameEl = document.getElementById('dj-name');
             const djTimeEl = document.getElementById('dj-time');
-            const djStatusBadges = [
-                document.getElementById('dj-status-badge-desktop'),
-                document.getElementById('dj-status-badge-mobile')
-            ];
+            
+            // REMOVED: djStatusBadges selectors as elements are removed
 
             // Share Button Elements
             const shareBtn = document.getElementById('share-btn');
@@ -578,7 +585,8 @@
                 let currentShow = null;
 
                 for (const show of djSchedule) {
-                    if (show.day === day && hour >= show.start && hour < show.end) {
+                    // Check if current day is in the scheduled days array
+                    if (show.days.includes(day) && hour >= show.start && hour < show.end) {
                         currentShow = show;
                         break;
                     }
@@ -612,18 +620,8 @@
                         djImageEl.style.padding = "10px";
                         djImageEl.style.backgroundColor = "#000";
                     }
-
-                    djStatusBadges.forEach(badge => {
-                        if (badge) {
-                            if (isLive) {
-                                badge.textContent = "ON AIR";
-                                badge.className = "text-[10px] lg:text-xs font-bold px-2 py-1 lg:px-3 lg:py-1 rounded-sm bg-vibe-red text-white shadow-lg backdrop-blur-sm animate-pulse font-montserrat";
-                            } else {
-                                badge.textContent = "OFF AIR";
-                                badge.className = "text-[10px] lg:text-xs font-bold px-2 py-1 lg:px-3 lg:py-1 rounded-sm bg-gray-600 text-white shadow-lg backdrop-blur-sm font-montserrat";
-                            }
-                        }
-                    });
+                    
+                    // REMOVED: Status badge update logic
                 }
             }
 
