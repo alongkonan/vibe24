@@ -201,6 +201,11 @@
             50% { transform: scale(0.9); }
             100% { transform: scale(1); }
         }
+
+        /* Request Button Overrides */
+        .custom-request-btn iframe {
+            max-width: 100% !important;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center relative p-4 overflow-y-auto py-8 lg:py-0">
@@ -312,7 +317,7 @@
             </div>
         </div>
 
-        <!-- RIGHT COLUMN: DJ Card -->
+        <!-- RIGHT COLUMN: DJ Card & Request -->
         <div class="col-span-12 lg:col-span-5 xl:col-span-4 flex flex-col gap-6">
             
             <!-- DJ Profile Card -->
@@ -354,6 +359,22 @@
                             <img src="https://img2.pic.in.th/1000074512.png" class="h-5 w-auto opacity-80 filter grayscale hover:grayscale-0 transition-all">
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Request Song Card -->
+            <div class="w-full relative rounded-2xl overflow-hidden shadow-xl bg-vibe-darkgrey border border-gray-800 p-6 flex flex-col items-center text-center group hover:border-vibe-red/50 transition-all duration-300">
+                <div class="absolute top-0 right-0 p-4 opacity-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-vibe-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                    </svg>
+                </div>
+                
+                <h3 class="text-xl font-bold text-white font-montserrat z-10 relative">REQUEST A SONG</h3>
+                <p class="text-sm text-gray-400 font-prompt z-10 relative mb-4">อยากฟังเพลงไหน...ขอมาได้เลย</p>
+                
+                <div class="z-10 relative w-full flex justify-center custom-request-btn">
+                    <script src="https://embed.radio.co/request/w75f0bc0.js"></script>
                 </div>
             </div>
 
@@ -410,17 +431,14 @@
 
             // --- Share Functionality ---
             shareBtn.addEventListener('click', async () => {
-                // Add simple animation
                 shareBtn.classList.add('click-pulse');
                 setTimeout(() => shareBtn.classList.remove('click-pulse'), 300);
 
                 const artist = trackArtistEl.textContent.trim();
                 const title = trackTitleEl.textContent.trim();
-                // Construct text
                 const shareText = `🎵 กำลังฟัง: ${title} - ${artist} ที่ VIBE 24`;
                 const shareUrl = window.location.href;
 
-                // 1. Try Native Share (Mobile)
                 if (navigator.share) {
                     try {
                         await navigator.share({
@@ -428,27 +446,19 @@
                             text: shareText,
                             url: shareUrl
                         });
-                        return; // Success
-                    } catch (err) {
-                        console.log('User cancelled share or API error', err);
-                    }
+                        return;
+                    } catch (err) {}
                 } 
                 
-                // 2. Fallback: Copy to Clipboard (Desktop)
                 try {
                     await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
-                    
-                    // Show success state
                     iconShare.classList.add('hidden');
                     iconCopied.classList.remove('hidden');
-                    
-                    // Revert after 2 seconds
                     setTimeout(() => {
                         iconShare.classList.remove('hidden');
                         iconCopied.classList.add('hidden');
                     }, 2000);
                 } catch (err) {
-                    console.error('Copy failed', err);
                     alert('ไม่สามารถคัดลอกลิงก์ได้');
                 }
             });
