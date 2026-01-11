@@ -202,9 +202,17 @@
             100% { transform: scale(1); }
         }
 
-        /* Request Button Overrides */
-        .custom-request-btn iframe {
-            max-width: 100% !important;
+        /* Modal Styles */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+        }
+        
+        /* Override Radio.co generated styles inside modal if possible, or just container */
+        #request-container iframe {
+            width: 100% !important;
+            border: none !important;
+            height: 450px !important; /* Force height */
         }
     </style>
 </head>
@@ -317,7 +325,7 @@
             </div>
         </div>
 
-        <!-- RIGHT COLUMN: DJ Card -->
+        <!-- RIGHT COLUMN: DJ Card & Request -->
         <div class="col-span-12 lg:col-span-5 xl:col-span-4 flex flex-col gap-6">
             
             <!-- DJ Profile Card -->
@@ -362,25 +370,14 @@
                 </div>
             </div>
 
-        </div>
+            <!-- Request Song Button (Replaces the big card) -->
+            <button id="open-request-btn" class="w-full rounded-xl bg-vibe-red hover:bg-red-700 text-white p-4 flex items-center justify-center gap-3 transition-all duration-300 shadow-lg hover:shadow-vibe-red/40 group border border-white/10">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                </svg>
+                <span class="text-lg font-bold font-montserrat">REQUEST A SONG</span>
+            </button>
 
-        <!-- BOTTOM ROW: Request Song -->
-        <div class="col-span-12 w-full mt-2 lg:mt-4">
-            <!-- Request Song Card -->
-            <div class="w-full relative rounded-2xl overflow-hidden shadow-xl bg-vibe-darkgrey border border-gray-800 p-6 flex flex-col items-center text-center group hover:border-vibe-red/50 transition-all duration-300">
-                <div class="absolute top-0 right-0 p-4 opacity-10">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-vibe-red" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                    </svg>
-                </div>
-                
-                <h3 class="text-xl font-bold text-white font-montserrat z-10 relative">REQUEST A SONG</h3>
-                <p class="text-sm text-gray-400 font-prompt z-10 relative mb-4">อยากฟังเพลงไหน...ขอมาได้เลย</p>
-                
-                <div class="z-10 relative w-full flex justify-center custom-request-btn">
-                    <script src="https://embed.radio.co/request/w75f0bc0.js"></script>
-                </div>
-            </div>
         </div>
 
         <div class="col-span-12 mt-4 lg:mt-0 text-center text-xs text-gray-600 w-full pt-4 border-t border-gray-800 lg:border-none font-montserrat">
@@ -389,6 +386,30 @@
 
     </main>
 
+    <!-- REQUEST MODAL POPUP -->
+    <div id="request-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay opacity-0 transition-opacity duration-300">
+        <div class="bg-vibe-darkgrey w-full max-w-lg rounded-2xl shadow-2xl border border-gray-700 transform scale-95 transition-transform duration-300" id="modal-content">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center p-4 border-b border-gray-800 bg-black/50 rounded-t-2xl">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-6 bg-vibe-red rounded-full"></span>
+                    <h3 class="text-xl font-bold text-white font-montserrat">REQUEST A SONG</h3>
+                </div>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-white hover:bg-gray-800 p-2 rounded-full transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Modal Body (Iframe Container) -->
+            <div class="p-1 bg-white rounded-b-xl" id="request-container">
+                <!-- Script will be injected here -->
+                <script src="https://embed.radio.co/request/w75f0bc0.js"></script>
+            </div>
+        </div>
+    </div>
+
     <audio id="radio-player" preload="none">Browser ไม่รองรับ</audio>
 
     <script>
@@ -396,7 +417,11 @@
             const STATION_ID = "sbf4f79825"; 
             
             const djSchedule = [
-                { day: 6, start: 9, end: 15, name: "DJ KRIT", timeLabel: "SAT 09.00-15.00", image: "https://lh3.googleusercontent.com/d/1c7-F8m-Q51qCx7oRLSa6zYhXsKKVAocA" },
+                // DJ KRIT (Sat & Sun)
+                { day: 6, start: 9, end: 15, name: "DJ KRIT", timeLabel: "SAT, SUN 09.00-15.00", image: "https://lh3.googleusercontent.com/d/1c7-F8m-Q51qCx7oRLSa6zYhXsKKVAocA" },
+                { day: 0, start: 9, end: 15, name: "DJ KRIT", timeLabel: "SAT, SUN 09.00-15.00", image: "https://lh3.googleusercontent.com/d/1c7-F8m-Q51qCx7oRLSa6zYhXsKKVAocA" },
+                
+                // DJ MAN (Sat)
                 { day: 6, start: 15, end: 19, name: "DJ MAN", timeLabel: "SAT 15.00-19.00", image: "https://lh3.googleusercontent.com/d/1ZQLeVFc6S4ARJwLdlcFS-yyPPwQGzV8M" }
             ];
             const defaultDJ = { name: "VIBE 24", timeLabel: "Hits 24 Hours", image: "https://img2.pic.in.th/1000074512.png" };
@@ -430,7 +455,40 @@
             const iconShare = document.getElementById('icon-share');
             const iconCopied = document.getElementById('icon-copied');
 
+            // Modal Elements
+            const openRequestBtn = document.getElementById('open-request-btn');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const requestModal = document.getElementById('request-modal');
+            const modalContent = document.getElementById('modal-content');
+
             let isPlaying = false;
+
+            // --- Modal Logic ---
+            function openModal() {
+                requestModal.classList.remove('hidden');
+                // Trigger reflow
+                void requestModal.offsetWidth;
+                requestModal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }
+
+            function closeModal() {
+                requestModal.classList.add('opacity-0');
+                modalContent.classList.remove('scale-100');
+                modalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    requestModal.classList.add('hidden');
+                }, 300);
+            }
+
+            openRequestBtn.addEventListener('click', openModal);
+            closeModalBtn.addEventListener('click', closeModal);
+            
+            // Close on click outside
+            requestModal.addEventListener('click', (e) => {
+                if (e.target === requestModal) closeModal();
+            });
 
             // --- Share Functionality ---
             shareBtn.addEventListener('click', async () => {
