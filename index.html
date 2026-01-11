@@ -427,15 +427,9 @@
             const STATION_ID = "sbf4f79825"; 
             
             const djSchedule = [
-                // DJ KRIT (MON-FRI) 09:00 - 15:00
-                { 
-                    days: [1, 0], // 1=Mon ... 5=Fri
-                    start: 9, 
-                    end: 15, 
-                    name: "DJ KRIT", 
-                    timeLabel: "SAT-SUN 09.00-15.00", 
-                    image: "https://lh3.googleusercontent.com/d/1c7-F8m-Q51qCx7oRLSa6zYhXsKKVAocA" 
-                }
+                { day: 6, start: 9, end: 15, name: "DJ KRIT", timeLabel: "SAT 09.00-15.00", image: "https://lh3.googleusercontent.com/d/1c7-F8m-Q51qCx7oRLSa6zYhXsKKVAocA" },
+                { day: 0, start: 9, end: 15, name: "DJ KRIT", timeLabel: "SUN 09.00-15.00", image: "https://lh3.googleusercontent.com/d/1c7-F8m-Q51qCx7oRLSa6zYhXsKKVAocA" }
+                // Removed DJ MAN
             ];
             const defaultDJ = { name: "VIBE 24", timeLabel: "Hits 24 Hours", image: "https://img5.pic.in.th/file/secure-sv1/vide-dj.png" };
 
