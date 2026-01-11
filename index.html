@@ -7,7 +7,7 @@
     
     <!-- SEO & Social Media Meta Tags -->
     <meta name="description" content="VIBE 24 - Music Station คลื่นเพลงฮิต...ต่อเนื่อง 24 ชั่วโมง ฟังเพลงออนไลน์คุณภาพเสียงระดับ HD กับดีเจที่คุณชื่นชอบ">
-    <meta name="keywords" content="VIBE 24, วิทยุออนไลน์, ฟังเพลง, เพลงฮิต, Radio Online, Music Station, DJ KRIT">
+    <meta name="keywords" content="VIBE 24, วิทยุออนไลน์, ฟังเพลง, เพลงฮิต, Radio Online, Music Station, DJ KRIT, DJ MAN">
     <meta name="author" content="VIBE 24 Station">
     
     <!-- Open Graph / Facebook / Line -->
@@ -349,19 +349,16 @@
                     
                     <!-- Image -->
                     <div class="w-[120px] sm:w-[140px] lg:w-full aspect-[3/4] lg:aspect-[3/4] relative flex-shrink-0 bg-black">
-                        <img id="dj-image" src="https://img2.pic.in.th/1000074512.png" alt="DJ Station" class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105" style="object-position: center; padding: 10px;">
+                        <!-- Updated Default Image directly in HTML -->
+                        <img id="dj-image" src="https://img5.pic.in.th/file/secure-sv1/vide-dj.png" alt="DJ Station" class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105" style="object-position: center; padding: 10px;">
                         
                         <!-- Gradient Overlay (Desktop) -->
                         <div class="hidden lg:block absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                        
-                        <!-- REMOVED: Desktop Status Badge (ON AIR/OFF AIR) -->
                     </div>
 
                     <!-- Content -->
                     <div class="flex-1 p-4 flex flex-col justify-center lg:absolute lg:bottom-0 lg:left-0 lg:w-full lg:p-6 lg:justify-end z-10 relative bg-gradient-to-r from-vibe-darkgrey to-transparent lg:bg-none">
                         
-                        <!-- REMOVED: Mobile Status Badge (ON AIR/OFF AIR) -->
-
                         <h3 id="dj-name" class="font-bold text-xl lg:text-4xl text-white leading-tight lg:leading-none tracking-tight mb-1 lg:mb-2 drop-shadow-lg line-clamp-1 lg:line-clamp-none pr-14 lg:pr-0">VIBE 24</h3>
                         
                         <div class="flex flex-wrap items-center gap-2 mb-0 lg:mb-4">
@@ -452,8 +449,7 @@
             const djImageEl = document.getElementById('dj-image');
             const djNameEl = document.getElementById('dj-name');
             const djTimeEl = document.getElementById('dj-time');
-            
-            // REMOVED: djStatusBadges selectors as elements are removed
+            // djStatusBadges selectors removed
 
             // Share Button Elements
             const shareBtn = document.getElementById('share-btn');
@@ -504,6 +500,7 @@
 
             function openModal() {
                 requestModal.classList.remove('hidden');
+                // Trigger reflow
                 void requestModal.offsetWidth;
                 requestModal.classList.remove('opacity-0');
                 modalContent.classList.remove('scale-95');
@@ -524,6 +521,8 @@
 
             if(openRequestBtn) openRequestBtn.addEventListener('click', openModal);
             if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+            
+            // Close on click outside
             requestModal.addEventListener('click', (e) => {
                 if (e.target === requestModal) closeModal();
             });
@@ -571,7 +570,7 @@
 
                 for (const show of djSchedule) {
                     // Check if current day is in the scheduled days array
-                    if (show.days.includes(day) && hour >= show.start && hour < show.end) {
+                    if (show.day === day && hour >= show.start && hour < show.end) {
                         currentShow = show;
                         break;
                     }
@@ -589,7 +588,8 @@
                     isLive = true;
                 }
 
-                if (djNameEl.textContent !== newName) {
+                // Check both name AND image to force update
+                if (djNameEl.textContent !== newName || djImageEl.src !== newImage) {
                     djNameEl.textContent = newName;
                     djTimeEl.textContent = newTime;
                     djImageEl.src = newImage;
@@ -605,8 +605,6 @@
                         djImageEl.style.padding = "10px";
                         djImageEl.style.backgroundColor = "#000";
                     }
-                    
-                    // REMOVED: Status badge update logic
                 }
             }
 
