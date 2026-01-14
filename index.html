@@ -10,10 +10,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="VIBE 24">
-    <!-- Updated App Icon -->
     <link rel="apple-touch-icon" href="https://img5.pic.in.th/file/secure-sv1/vide.png">
     
-    <!-- Manifest for PWA (Embedded via Data URI) -->
     <link rel="manifest" id="manifest-placeholder">
 
     <!-- SEO & Social Media Meta Tags -->
@@ -68,7 +66,6 @@
             background-color: #000000;
             color: #FFFFFF;
             overflow-x: hidden;
-            /* Prevent pull-to-refresh on mobile app feel */
             overscroll-behavior-y: none;
         }
 
@@ -126,7 +123,6 @@
             border: 1px solid #333;
         }
         
-        /* Smart Resize Class */
         .art-shrink {
             max-width: 180px !important; 
         }
@@ -225,7 +221,6 @@
             100% { transform: translate(-100%, 0); }
         }
         
-        /* Share Button Animation */
         .click-pulse {
             animation: clickPulse 0.3s ease-out;
         }
@@ -235,7 +230,6 @@
             100% { transform: scale(1); }
         }
 
-        /* Modal Styles */
         .modal-overlay {
             background-color: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(5px);
@@ -253,7 +247,6 @@
     <div class="vibe-bg"></div>
     <div class="vibe-pulse"></div>
 
-    <!-- PWA Install Button (Hidden by default) -->
     <button id="pwa-install-btn" class="hidden fixed top-4 right-4 z-50 bg-white text-black font-bold text-xs py-2 px-4 rounded-full shadow-lg hover:bg-gray-200 transition-all flex items-center gap-2 font-montserrat animate-bounce">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -311,7 +304,7 @@
                                 <span class="text-vibe-red font-bold whitespace-nowrap flex-shrink-0 z-10 font-montserrat">NEXT:</span>
                                 <div class="marquee-container w-full h-6 flex items-center">
                                     <span id="next-song-display" class="marquee-content font-medium" style="animation-duration: 12s;">
-                                        <script src="https://embed.radio.co/embed/sbf4f79825/next.js"></script>
+                                        Stay Tuned
                                     </span>
                                 </div>
                             </div>
@@ -350,11 +343,9 @@
                             
                             <!-- Share Button -->
                             <button id="share-btn" class="ml-2 text-gray-400 hover:text-vibe-red transition-all duration-200 p-2 rounded-full hover:bg-white/10" title="แชร์เพลงนี้">
-                                <!-- Share Icon -->
                                 <svg id="icon-share" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                                 </svg>
-                                <!-- Copied/Success Icon (Hidden by default) -->
                                 <svg id="icon-copied" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
@@ -370,29 +361,17 @@
             
             <!-- DJ Profile Card -->
             <div id="dj-card" class="w-full relative rounded-2xl overflow-hidden shadow-2xl group transition-all duration-300 hover:shadow-vibe-red/20 bg-vibe-darkgrey border border-gray-800">
-                
-                <!-- Responsive Layout -->
                 <div class="flex flex-row lg:block relative h-full">
-                    
-                    <!-- Image -->
                     <div class="w-[120px] sm:w-[140px] lg:w-full aspect-[3/4] lg:aspect-[3/4] relative flex-shrink-0 bg-black">
-                        <!-- Updated Default DJ Image -->
                         <img id="dj-image" src="https://img5.pic.in.th/file/secure-sv1/vide-djb72e78e3ef1fd50e.png" alt="DJ Station" class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105" style="object-position: center; padding: 10px;">
-                        
-                        <!-- Gradient Overlay (Desktop) -->
                         <div class="hidden lg:block absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                     </div>
-
-                    <!-- Content -->
                     <div class="flex-1 p-4 flex flex-col justify-center lg:absolute lg:bottom-0 lg:left-0 lg:w-full lg:p-6 lg:justify-end z-10 relative bg-gradient-to-r from-vibe-darkgrey to-transparent lg:bg-none">
-                        
                         <h3 id="dj-name" class="font-bold text-xl lg:text-4xl text-white leading-tight lg:leading-none tracking-tight mb-1 lg:mb-2 drop-shadow-lg line-clamp-1 lg:line-clamp-none pr-14 lg:pr-0">VIBE 24</h3>
-                        
                         <div class="flex flex-wrap items-center gap-2 mb-0 lg:mb-4">
                             <span class="px-2 py-0.5 rounded-sm text-[10px] font-bold bg-white text-vibe-black hidden lg:inline-block font-montserrat">HOST</span>
                             <p id="dj-time" class="text-sm lg:text-lg text-gray-300 font-medium tracking-wide drop-shadow-md">Hits 24 Hours</p>
                         </div>
-                        
                         <div class="hidden lg:block w-12 h-1 bg-vibe-red mb-3"></div>
                         <div class="hidden lg:flex items-center justify-end w-full">
                             <img src="https://img2.pic.in.th/1000074512.png" class="h-5 w-auto opacity-80 filter grayscale hover:grayscale-0 transition-all">
@@ -420,7 +399,6 @@
     <!-- REQUEST MODAL POPUP -->
     <div id="request-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay opacity-0 transition-opacity duration-300">
         <div class="bg-vibe-darkgrey w-full max-w-lg rounded-2xl shadow-2xl border border-gray-700 transform scale-95 transition-transform duration-300" id="modal-content">
-            <!-- Modal Header -->
             <div class="flex justify-between items-center p-4 border-b border-gray-800 bg-black/50 rounded-t-2xl">
                 <div class="flex items-center gap-2">
                     <span class="w-2 h-6 bg-vibe-red rounded-full"></span>
@@ -433,13 +411,10 @@
                 </button>
             </div>
             
-            <!-- Modal Body (Iframe Container) -->
             <div class="p-0 bg-white rounded-b-xl overflow-hidden relative" id="request-container">
-                <!-- Loader -->
                 <div class="absolute inset-0 flex items-center justify-center bg-gray-100 z-0">
                     <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
                 </div>
-                <!-- Content injected by JS -->
             </div>
         </div>
     </div>
@@ -448,29 +423,57 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // --- PWA MANIFEST INJECTION ---
+            const manifestContent = {
+                "name": "VIBE 24",
+                "short_name": "VIBE 24",
+                "start_url": ".",
+                "display": "standalone",
+                "background_color": "#000000",
+                "theme_color": "#000000",
+                "icons": [
+                    {
+                        "src": "https://img5.pic.in.th/file/secure-sv1/vide.png",
+                        "sizes": "192x192",
+                        "type": "image/png"
+                    },
+                    {
+                        "src": "https://img5.pic.in.th/file/secure-sv1/vide.png",
+                        "sizes": "512x512",
+                        "type": "image/png"
+                    }
+                ]
+            };
+            const stringManifest = JSON.stringify(manifestContent);
+            const blob = new Blob([stringManifest], {type: 'application/json'});
+            const manifestURL = URL.createObjectURL(blob);
+            document.getElementById('manifest-placeholder').setAttribute('href', manifestURL);
+
+            // --- PWA INSTALL PROMPT ---
+            let deferredPrompt;
+            const installBtn = document.getElementById('pwa-install-btn');
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                installBtn.classList.remove('hidden');
+            });
+
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    deferredPrompt = null;
+                    installBtn.classList.add('hidden');
+                }
+            });
+
             const STATION_ID = "sbf4f79825"; 
             
             const djSchedule = [
-                // DJ KRIT: SAT-SUN 09.00-15.00
-                { 
-                    days: [0, 6], // 0=Sun, 6=Sat
-                    start: 9, 
-                    end: 15, 
-                    name: "DJ KRIT", 
-                    timeLabel: "SAT-SUN 09.00-15.00", 
-                    image: "https://lh3.googleusercontent.com/d/1c7-F8m-Q51qCx7oRLSa6zYhXsKKVAocA" 
-                },
-                // DJ KRIT: MON-FRI 18.00-22.00
-                { 
-                    days: [1, 2, 3, 4, 5], // 1=Mon ... 5=Fri
-                    start: 18, 
-                    end: 22, 
-                    name: "DJ KRIT", 
-                    timeLabel: "MON-FRI 18.00-22.00", 
-                    image: "https://lh3.googleusercontent.com/d/1c7-F8m-Q51qCx7oRLSa6zYhXsKKVAocA" 
-                }
+                { days: [0, 6], start: 9, end: 15, name: "DJ KRIT", timeLabel: "SAT-SUN 09.00-15.00", image: "https://lh3.googleusercontent.com/d/1c7-F8m-Q51qCx7oRLSa6zYhXsKKVAocA" },
+                { days: [1, 2, 3, 4, 5], start: 18, end: 22, name: "DJ KRIT", timeLabel: "MON-FRI 18.00-22.00", image: "https://lh3.googleusercontent.com/d/1c7-F8m-Q51qCx7oRLSa6zYhXsKKVAocA" }
             ];
-            // Updated Default DJ Image URL
             const defaultDJ = { name: "VIBE 24", timeLabel: "Hits 24 Hours", image: "https://img5.pic.in.th/file/secure-sv1/vide-djb72e78e3ef1fd50e.png" };
 
             const urls = {
@@ -492,64 +495,42 @@
             const djImageEl = document.getElementById('dj-image');
             const djNameEl = document.getElementById('dj-name');
             const djTimeEl = document.getElementById('dj-time');
-            // djStatusBadges selectors removed
 
-            // Share Button Elements
             const shareBtn = document.getElementById('share-btn');
             const iconShare = document.getElementById('icon-share');
             const iconCopied = document.getElementById('icon-copied');
 
-            // Modal Elements
             const openRequestBtn = document.getElementById('open-request-btn');
             const closeModalBtn = document.getElementById('close-modal-btn');
             const requestModal = document.getElementById('request-modal');
             const modalContent = document.getElementById('modal-content');
             const requestContainer = document.getElementById('request-container');
+            
+            const nextSongDisplayEl = document.getElementById('next-song-display');
 
             let isPlaying = false;
 
-            // --- Modal Logic with Script Injection ---
             function loadRequestScript() {
-                // Prevent duplicate injection
                 if (requestContainer.querySelector('iframe')) return;
-
                 const iframe = document.createElement('iframe');
                 iframe.style.width = "100%";
                 iframe.style.height = "600px";
                 iframe.style.border = "none";
                 iframe.style.position = "relative";
-                iframe.style.zIndex = "10"; // Above loader
-                
+                iframe.style.zIndex = "10"; 
                 requestContainer.appendChild(iframe);
-
                 const doc = iframe.contentWindow.document;
                 doc.open();
-                // Inject the script into a clean iframe document
-                doc.write(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <style>
-                            body { margin: 0; padding: 0; font-family: 'Prompt', sans-serif; }
-                        </style>
-                    </head>
-                    <body>
-                        <script src="https://embed.radio.co/request/w75f0bc0.js"><\/script>
-                    </body>
-                    </html>
-                `);
+                doc.write(`<!DOCTYPE html><html><head><style>body { margin: 0; padding: 0; font-family: 'Prompt', sans-serif; }</style></head><body><script src="https://embed.radio.co/request/w75f0bc0.js"><\/script></body></html>`);
                 doc.close();
             }
 
             function openModal() {
                 requestModal.classList.remove('hidden');
-                // Trigger reflow
                 void requestModal.offsetWidth;
                 requestModal.classList.remove('opacity-0');
                 modalContent.classList.remove('scale-95');
                 modalContent.classList.add('scale-100');
-                
-                // Load script when opening to ensure freshness
                 loadRequestScript();
             }
 
@@ -557,54 +538,31 @@
                 requestModal.classList.add('opacity-0');
                 modalContent.classList.remove('scale-100');
                 modalContent.classList.add('scale-95');
-                setTimeout(() => {
-                    requestModal.classList.add('hidden');
-                }, 300);
+                setTimeout(() => { requestModal.classList.add('hidden'); }, 300);
             }
 
             if(openRequestBtn) openRequestBtn.addEventListener('click', openModal);
             if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
-            
-            // Close on click outside
-            requestModal.addEventListener('click', (e) => {
-                if (e.target === requestModal) closeModal();
-            });
+            requestModal.addEventListener('click', (e) => { if (e.target === requestModal) closeModal(); });
 
-            // --- Share Functionality ---
             shareBtn.addEventListener('click', async () => {
                 shareBtn.classList.add('click-pulse');
                 setTimeout(() => shareBtn.classList.remove('click-pulse'), 300);
-
                 const artist = trackArtistEl.textContent.trim();
                 const title = trackTitleEl.textContent.trim();
                 const shareText = `🎵 กำลังฟัง: ${title} - ${artist} ที่ VIBE 24`;
                 const shareUrl = window.location.href;
-
                 if (navigator.share) {
-                    try {
-                        await navigator.share({
-                            title: 'VIBE 24 Music Station',
-                            text: shareText,
-                            url: shareUrl
-                        });
-                        return;
-                    } catch (err) {}
+                    try { await navigator.share({ title: 'VIBE 24', text: shareText, url: shareUrl }); return; } catch (err) {}
                 } 
-                
                 try {
                     await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
                     iconShare.classList.add('hidden');
                     iconCopied.classList.remove('hidden');
-                    setTimeout(() => {
-                        iconShare.classList.remove('hidden');
-                        iconCopied.classList.add('hidden');
-                    }, 2000);
-                } catch (err) {
-                    alert('ไม่สามารถคัดลอกลิงก์ได้');
-                }
+                    setTimeout(() => { iconShare.classList.remove('hidden'); iconCopied.classList.add('hidden'); }, 2000);
+                } catch (err) { alert('ไม่สามารถคัดลอกลิงก์ได้'); }
             });
 
-            // --- DJ Logic ---
             function updateDJCard() {
                 const now = new Date();
                 const day = now.getDay();
@@ -612,10 +570,7 @@
                 let currentShow = null;
 
                 for (const show of djSchedule) {
-                    // Check if current day is in the scheduled days array
-                    // Check for single day or array of days (fallback for legacy config)
                     const dayMatch = Array.isArray(show.days) ? show.days.includes(day) : show.day === day;
-                    
                     if (dayMatch && hour >= show.start && hour < show.end) {
                         currentShow = show;
                         break;
@@ -634,7 +589,6 @@
                     isLive = true;
                 }
 
-                // Check both name AND image to force update
                 if (djNameEl.textContent !== newName || djImageEl.src !== newImage) {
                     djNameEl.textContent = newName;
                     djTimeEl.textContent = newTime;
@@ -654,7 +608,6 @@
                 }
             }
 
-            // --- Player Logic ---
             player.addEventListener('error', (e) => {
                 console.error("Audio Error", e);
                 if (isPlaying) {
@@ -664,6 +617,40 @@
                     alert("ไม่สามารถเชื่อมต่อสัญญาณเสียงได้");
                 }
             });
+
+            // --- Updated Next Song Fetcher (Iframe Method) ---
+            // This ensures next song updates consistently with current song
+            function fetchNextSong() {
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+                
+                const scriptSrc = `${urls.nextScript}?t=${Date.now()}`;
+                
+                // Set timeout to remove iframe if too slow
+                const timeoutId = setTimeout(() => {
+                    if (document.body.contains(iframe)) document.body.removeChild(iframe);
+                }, 4000);
+
+                const doc = iframe.contentWindow.document;
+                doc.open();
+                doc.write(`<html><body><script src="${scriptSrc}"><\/script></body></html>`);
+                doc.close();
+
+                iframe.onload = function() {
+                    clearTimeout(timeoutId);
+                    try {
+                        const content = iframe.contentWindow.document.body.innerText;
+                        if (content && content.trim() !== "") {
+                            let text = content.trim();
+                            // Filter "Loading..." to avoid ugly flash
+                            if (text.includes("Loading") || text === "...") text = "VIBE 24";
+                            if (nextSongDisplayEl) nextSongDisplayEl.textContent = text;
+                        }
+                    } catch (e) { console.error(e); }
+                    if (document.body.contains(iframe)) document.body.removeChild(iframe);
+                };
+            }
 
             async function updateTrackData() {
                 let artworkUrl = defaultArtwork;
@@ -682,7 +669,9 @@
                     }
                 } catch (e) {}
 
-                // Improved Split Logic
+                // Trigger next song update synchronously with current song
+                fetchNextSong();
+
                 const separator = /\s*-\s*|\s*–\s*/;
                 if (separator.test(fullTitle)) {
                     const parts = fullTitle.split(separator);
@@ -690,7 +679,6 @@
                     title = parts.slice(1).join(" - ").trim();
                 } else {
                     title = fullTitle;
-                    // Keep VIBE 24 as artist if none found
                     artist = "VIBE 24"; 
                 }
 
