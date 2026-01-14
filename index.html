@@ -305,9 +305,11 @@
                         <div class="flex items-center justify-center lg:justify-start w-full pt-2">
                             <div class="flex items-center gap-2 text-sm text-gray-300 bg-vibe-grey py-1.5 px-4 rounded-md w-full max-w-sm lg:max-w-md border-l-4 border-vibe-red overflow-hidden">
                                 <span class="text-vibe-red font-bold whitespace-nowrap flex-shrink-0 z-10 font-montserrat">NEXT:</span>
-                                <!-- Using an empty div for iframe injection -->
-                                <div id="next-song-iframe-container" class="w-full h-6 flex items-center overflow-hidden">
-                                    <span class="text-gray-500 italic text-xs">Loading...</span>
+                                <div class="marquee-container w-full h-6 flex items-center">
+                                    <!-- Use span instead of div/iframe for cleaner look -->
+                                    <span id="next-song-display" class="marquee-content font-medium" style="animation-duration: 12s;">
+                                        Stay Tuned
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -499,7 +501,8 @@
             const urls = {
                 stream: `https://streaming.radio.co/${STATION_ID}/listen`,
                 status: `https://public.radio.co/stations/${STATION_ID}/status`,
-                nextScript: `https://embed.radio.co/embed/${STATION_ID}/next.js`
+                // Explicitly use the JSON API for next track which is cleaner than scraping
+                nextApi: `https://public.radio.co/stations/${STATION_ID}/next`
             };
             const defaultArtwork = "https://img2.pic.in.th/1000074512.png";
 
@@ -526,7 +529,7 @@
             const modalContent = document.getElementById('modal-content');
             const requestContainer = document.getElementById('request-container');
             
-            const nextSongContainer = document.getElementById('next-song-iframe-container');
+            const nextSongDisplayEl = document.getElementById('next-song-display');
 
             let isPlaying = false;
 
@@ -563,10 +566,13 @@
 
             function openModal() {
                 requestModal.classList.remove('hidden');
+                // Trigger reflow
                 void requestModal.offsetWidth;
                 requestModal.classList.remove('opacity-0');
                 modalContent.classList.remove('scale-95');
                 modalContent.classList.add('scale-100');
+                
+                // Load script when opening to ensure freshness
                 loadRequestScript();
             }
 
@@ -581,6 +587,8 @@
 
             if(openRequestBtn) openRequestBtn.addEventListener('click', openModal);
             if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+            
+            // Close on click outside
             requestModal.addEventListener('click', (e) => {
                 if (e.target === requestModal) closeModal();
             });
@@ -627,7 +635,9 @@
                 let currentShow = null;
 
                 for (const show of djSchedule) {
+                    // Check if current day is in the scheduled days array
                     const dayMatch = Array.isArray(show.days) ? show.days.includes(day) : show.day === day;
+                    
                     if (dayMatch && hour >= show.start && hour < show.end) {
                         currentShow = show;
                         break;
@@ -676,50 +686,25 @@
                 }
             });
 
-            // --- Iframe Next Song Injection ---
-            function updateNextSongIframe() {
-                // Clear existing content
-                nextSongContainer.innerHTML = '';
-                
-                const iframe = document.createElement('iframe');
-                iframe.style.width = "100%";
-                iframe.style.height = "100%";
-                iframe.style.border = "none";
-                iframe.style.overflow = "hidden";
-                
-                nextSongContainer.appendChild(iframe);
-                
-                const doc = iframe.contentWindow.document;
-                doc.open();
-                doc.write(`
-                    <!DOCTYPE html>
-                    <html lang="th">
-                    <head>
-                        <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500&display=swap" rel="stylesheet">
-                        <style>
-                            body {
-                                margin: 0;
-                                padding: 0;
-                                background-color: transparent;
-                                color: #d1d5db; /* gray-300 */
-                                font-family: 'Prompt', sans-serif;
-                                font-size: 14px;
-                                font-weight: 500;
-                                white-space: nowrap;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                display: flex;
-                                align-items: center;
-                                height: 24px;
+            // --- JSON API Fetcher for Next Song (Better & CORS Friendly) ---
+            async function fetchNextSong() {
+                try {
+                    const response = await fetch(`${urls.nextApi}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        // API returns { title: "Song Name" }
+                        if (data && data.title) {
+                            let text = data.title;
+                             // Filter "Loading..." and patterns like <.....>
+                            if (text.includes("Loading") || text === "..." || /^<[\.\s]*>$/.test(text) || (text.includes("<") && text.includes(">"))) {
+                                text = "VIBE 24";
                             }
-                        </style>
-                    </head>
-                    <body>
-                        <script src="${urls.nextScript}?t=${Date.now()}"><\/script>
-                    </body>
-                    </html>
-                `);
-                doc.close();
+                            if (nextSongDisplayEl) nextSongDisplayEl.textContent = text;
+                        }
+                    }
+                } catch (e) {
+                    console.error("Next song fetch failed", e);
+                }
             }
 
             async function updateTrackData() {
@@ -740,8 +725,14 @@
                 } catch (e) {}
 
                 // Trigger Next Song Update
-                updateNextSongIframe();
+                fetchNextSong();
 
+                // Check for patterns like <....> in title
+                if (/^<[\.\s]*>$/.test(fullTitle) || (fullTitle.includes("<") && fullTitle.includes(">"))) {
+                    fullTitle = "VIBE 24 - Music Station";
+                }
+
+                // Improved Split Logic
                 const separator = /\s*-\s*|\s*–\s*/;
                 if (separator.test(fullTitle)) {
                     const parts = fullTitle.split(separator);
