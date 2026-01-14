@@ -306,7 +306,6 @@
                             <div class="flex items-center gap-2 text-sm text-gray-300 bg-vibe-grey py-1.5 px-4 rounded-md w-full max-w-sm lg:max-w-md border-l-4 border-vibe-red overflow-hidden">
                                 <span class="text-vibe-red font-bold whitespace-nowrap flex-shrink-0 z-10 font-montserrat">NEXT:</span>
                                 <div class="marquee-container w-full h-6 flex items-center">
-                                    <!-- Use span instead of div/iframe for cleaner look -->
                                     <span id="next-song-display" class="marquee-content font-medium" style="animation-duration: 12s;">
                                         Stay Tuned
                                     </span>
@@ -501,8 +500,7 @@
             const urls = {
                 stream: `https://streaming.radio.co/${STATION_ID}/listen`,
                 status: `https://public.radio.co/stations/${STATION_ID}/status`,
-                // Explicitly use the JSON API for next track which is cleaner than scraping
-                nextApi: `https://public.radio.co/stations/${STATION_ID}/next`
+                nextScript: `https://embed.radio.co/embed/${STATION_ID}/next.js`
             };
             const defaultArtwork = "https://img2.pic.in.th/1000074512.png";
 
@@ -686,25 +684,45 @@
                 }
             });
 
-            // --- JSON API Fetcher for Next Song (Better & CORS Friendly) ---
-            async function fetchNextSong() {
-                try {
-                    const response = await fetch(`${urls.nextApi}`);
-                    if (response.ok) {
-                        const data = await response.json();
-                        // API returns { title: "Song Name" }
-                        if (data && data.title) {
-                            let text = data.title;
-                             // Filter "Loading..." and patterns like <.....>
+            // --- NEW: Iframe Scraper for Next Song (Guaranteed to work with document.write scripts) ---
+            function fetchNextSong() {
+                // Remove old iframe
+                const oldIframe = document.getElementById('scraper-iframe');
+                if (oldIframe) document.body.removeChild(oldIframe);
+
+                // Create hidden iframe
+                const iframe = document.createElement('iframe');
+                iframe.id = 'scraper-iframe';
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+
+                // Add cache buster to URL
+                const scriptSrc = `${urls.nextScript}?t=${Date.now()}`;
+
+                const doc = iframe.contentWindow.document;
+                doc.open();
+                // Write script into iframe
+                doc.write(`<html><body><script src="${scriptSrc}"><\/script></body></html>`);
+                doc.close();
+
+                iframe.onload = function() {
+                    try {
+                        const content = iframe.contentWindow.document.body.innerText;
+                        if (content && content.trim() !== "") {
+                            let text = content.trim();
+                            // Filters
                             if (text.includes("Loading") || text === "..." || /^<[\.\s]*>$/.test(text) || (text.includes("<") && text.includes(">"))) {
                                 text = "VIBE 24";
                             }
                             if (nextSongDisplayEl) nextSongDisplayEl.textContent = text;
                         }
-                    }
-                } catch (e) {
-                    console.error("Next song fetch failed", e);
-                }
+                    } catch (e) { console.error("Scrape failed", e); }
+                    
+                    // Cleanup
+                    setTimeout(() => {
+                        if (document.body.contains(iframe)) document.body.removeChild(iframe);
+                    }, 100);
+                };
             }
 
             async function updateTrackData() {
@@ -724,13 +742,8 @@
                     }
                 } catch (e) {}
 
-                // Trigger Next Song Update
+                // Trigger Next Song Update (Synchronous with current)
                 fetchNextSong();
-
-                // Check for patterns like <....> in title
-                if (/^<[\.\s]*>$/.test(fullTitle) || (fullTitle.includes("<") && fullTitle.includes(">"))) {
-                    fullTitle = "VIBE 24 - Music Station";
-                }
 
                 // Improved Split Logic
                 const separator = /\s*-\s*|\s*–\s*/;
@@ -740,6 +753,7 @@
                     title = parts.slice(1).join(" - ").trim();
                 } else {
                     title = fullTitle;
+                    // Keep VIBE 24 as artist if none found
                     artist = "VIBE 24"; 
                 }
 
