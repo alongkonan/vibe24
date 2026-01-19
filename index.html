@@ -98,10 +98,7 @@
                 <div class="w-full flex flex-col items-center lg:items-start lg:flex-1 space-y-4">
                     <div class="w-full flex justify-between items-center lg:mb-2">
                         <div class="flex items-center gap-2">
-                            <span class="flex h-3 w-3 relative">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-vibe-red opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-3 w-3 bg-vibe-red"></span>
-                            </span>
+                            <span class="flex h-3 w-3 relative"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-vibe-red opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-vibe-red"></span></span>
                             <span class="text-xs font-bold tracking-widest text-vibe-red uppercase font-montserrat">LIVE 24/7</span>
                         </div>
                         <img src="https://img2.pic.in.th/1000074512.png" alt="VIBE 24" class="h-10 lg:h-12 object-contain drop-shadow-md">
@@ -120,7 +117,7 @@
                                 <span class="text-vibe-red font-bold whitespace-nowrap flex-shrink-0 z-10 font-montserrat">NEXT:</span>
                                 <div class="marquee-container w-full h-6 flex items-center">
                                     <span id="next-song-display" class="marquee-content font-medium" style="animation-duration: 12s;">
-                                        <script src="https://embed.radio.co/embed/sbf4f79825/next.js"></script>
+                                        Stay Tuned
                                     </span>
                                 </div>
                             </div>
@@ -128,21 +125,17 @@
                     </div>
                     <div class="w-full flex flex-col items-center lg:items-start gap-6 mt-2">
                         <div class="flex items-center justify-center lg:justify-start gap-8 w-full">
-                            <div class="equalizer h-8 w-12 hidden md:flex lg:hidden">
-                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-                            </div>
+                            <div class="equalizer h-8 w-12 hidden md:flex lg:hidden"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
                             <button id="play-btn" class="group relative flex items-center justify-center w-20 h-20 rounded-full bg-vibe-white hover:bg-gray-100 text-vibe-black shadow-lg hover:shadow-vibe-red/50 transition-all duration-300 transform hover:scale-105 active:scale-95 border-4 border-transparent hover:border-vibe-red">
                                 <svg id="icon-play" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 ml-1 text-vibe-red" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                 <svg id="icon-pause" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 hidden text-vibe-red" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                             </button>
-                            <div class="equalizer h-12 w-16 hidden lg:flex gap-[3px]">
-                                <div class="bar w-1.5"></div><div class="bar w-1.5"></div><div class="bar w-1.5"></div><div class="bar w-1.5"></div><div class="bar w-1.5"></div><div class="bar w-1.5"></div>
-                            </div>
+                            <div class="equalizer h-12 w-16 hidden lg:flex gap-[3px]"><div class="bar w-1.5"></div><div class="bar w-1.5"></div><div class="bar w-1.5"></div><div class="bar w-1.5"></div><div class="bar w-1.5"></div><div class="bar w-1.5"></div></div>
                         </div>
                         <div class="w-full flex items-center gap-3 px-4 lg:px-0 max-w-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
                             <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.8" class="w-full h-2 rounded-lg appearance-none cursor-pointer flex-1" style="background: #333;">
-                            <button id="share-btn" class="ml-2 text-gray-400 hover:text-vibe-red transition-all duration-200 p-2 rounded-full hover:bg-white/10"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg></button>
+                            <button id="share-btn" class="ml-2 text-gray-400 hover:text-vibe-red transition-all duration-200 p-2 rounded-full hover:bg-white/10" title="แชร์เพลงนี้"><svg id="icon-share" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg></button>
                         </div>
                     </div>
                 </div>
@@ -202,13 +195,7 @@
             <div class="flex-1 overflow-y-auto p-4 custom-scrollbar">
                 <!-- Login View -->
                 <div id="login-view" class="flex flex-col items-center justify-center h-full space-y-6">
-                    <div class="text-center space-y-2">
-                        <div class="w-16 h-16 bg-yellow-400/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-400" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                        </div>
-                        <h2 class="text-xl font-bold text-white">สะสมคะแนนแลกของรางวัล</h2>
-                        <p class="text-gray-400 text-sm">ฟังเพลงทุก 1 นาที รับฟรี 1 คะแนน!</p>
-                    </div>
+                    <div class="text-center space-y-2"><h2 class="text-xl font-bold text-white">สะสมคะแนนแลกของรางวัล</h2><p class="text-gray-400 text-sm">ฟังเพลงทุก 1 นาที รับฟรี 1 คะแนน!</p></div>
                     <input type="tel" id="phone-input" placeholder="เบอร์โทรศัพท์ (สำหรับสะสมแต้ม)" class="w-full bg-black/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-vibe-red text-center tracking-widest text-lg">
                     <button id="login-submit-btn" class="w-full bg-vibe-red hover:bg-red-700 text-white font-bold py-3 rounded-lg transition-all shadow-lg shadow-vibe-red/20">เริ่มสะสมคะแนน</button>
                     <p id="login-error" class="text-red-500 text-xs hidden">กรุณากรอกเบอร์โทรศัพท์</p>
@@ -246,21 +233,23 @@
         document.addEventListener('DOMContentLoaded', () => {
             // *** CONFIGURATION: API URL FROM GOOGLE APPS SCRIPT ***
             // *** นำลิงก์ Web App URL ที่ Deploy แล้วมาวางแทนที่ตรงนี้ ***
-            const API_URL = ""; 
+            const API_URL = "https://script.google.com/macros/s/AKfycbyusUkCTYP4kSM5ZN1naqVkTAuzbEmiD1p_As6FbCfVXvr_XWgLGDk0I4DSDe_aivDu0g/exec"; 
             // *******************************************************
 
             const STATION_ID = "sbf4f79825"; 
             const urls = {
                 stream: `https://streaming.radio.co/${STATION_ID}/listen`,
                 status: `https://public.radio.co/stations/${STATION_ID}/status`,
-                nextScript: `https://embed.radio.co/embed/${STATION_ID}/next.js`
+                nextScript: `https://embed.radio.co/embed/${STATION_ID}/next.js`,
+                songScript: `https://embed.radio.co/embed/${STATION_ID}/song.js`
             };
+            const defaultArtwork = "https://img2.pic.in.th/1000074512.png";
             
             // --- POINTS SYSTEM VARIABLES ---
             let currentUser = localStorage.getItem('vibe_user_phone');
             let currentPoints = 0;
             let pointTimer = null;
-            let isUserPlaying = false; // Tracks if user is actively playing to count points
+            let isPlaying = false;
 
             // --- DOM ELEMENTS ---
             const player = document.getElementById('radio-player');
@@ -271,6 +260,11 @@
             const artworkImage = document.getElementById('artwork-image');
             const trackArtistEl = document.getElementById('track-artist');
             const trackTitleEl = document.getElementById('track-title');
+            
+            const nextSongDisplayEl = document.getElementById('next-song-display');
+            const djImageEl = document.getElementById('dj-image');
+            const djNameEl = document.getElementById('dj-name');
+            const djTimeEl = document.getElementById('dj-time');
             
             const djSchedule = [
                 { days: [0, 6], start: 9, end: 15, name: "DJ KRIT", timeLabel: "SAT-SUN 09.00-15.00", image: "https://lh3.googleusercontent.com/d/1c7-F8m-Q51qCx7oRLSa6zYhXsKKVAocA" },
@@ -298,23 +292,17 @@
 
             // Check login status on load
             if (currentUser) {
-                pointsBtn.classList.remove('hidden'); // Show button if logged in previously? Or always show?
-                // Auto-login verify
+                pointsBtn.classList.remove('hidden'); 
                 fetchUserPoints();
             } else {
-                 pointsBtn.classList.remove('hidden'); // Always show button
+                 pointsBtn.classList.remove('hidden'); 
             }
 
             // Open Points Modal
             pointsBtn.addEventListener('click', () => {
                 pointsModal.classList.remove('hidden');
                 setTimeout(() => { pointsModal.querySelector('div').classList.remove('scale-95'); pointsModal.querySelector('div').classList.add('scale-100'); pointsModal.classList.remove('opacity-0'); }, 10);
-                
-                if (currentUser) {
-                    showDashboard();
-                } else {
-                    showLogin();
-                }
+                if (currentUser) showDashboard(); else showLogin();
             });
 
             // Close Points Modal
@@ -335,13 +323,6 @@
                 loginError.classList.add('hidden');
                 loginSubmitBtn.textContent = "กำลังเข้าสู่ระบบ...";
                 
-                // Call API Login
-                if (!API_URL) {
-                    // DEMO MODE if no API URL
-                    completeLogin(phone, 0);
-                    return;
-                }
-
                 fetch(`${API_URL}?action=login&phone=${phone}`, { method: 'POST' })
                     .then(res => res.json())
                     .then(data => {
@@ -359,11 +340,7 @@
                 localStorage.setItem('vibe_user_phone', phone);
                 currentPoints = points;
                 showDashboard();
-                
-                // Start tracking if music is already playing
-                if (!player.paused) {
-                    startPointTimer();
-                }
+                if (!player.paused) startPointTimer();
             }
 
             function showLogin() {
@@ -393,18 +370,9 @@
             }
 
             function fetchRewards() {
-                if (!API_URL) {
-                    // Demo Rewards
-                    renderRewards([
-                        { id: 1, name: "บัตร Starbucks 100 บาท", cost: 500, image: "https://via.placeholder.com/60?text=Coffee" },
-                        { id: 2, name: "เสื้อยืด VIBE 24 Limited", cost: 1200, image: "https://via.placeholder.com/60?text=Shirt" }
-                    ]);
-                    return;
-                }
-                
                 fetch(`${API_URL}?action=getRewards`)
                     .then(res => res.json())
-                    .then(data => renderRewards(data));
+                    .then(data => renderRewards(data.data));
             }
 
             function renderRewards(rewards) {
@@ -431,17 +399,11 @@
                 }
                 if (!confirm(`ยืนยันการแลก "${name}" ด้วย ${cost} คะแนน?`)) return;
 
-                if (!API_URL) {
-                    updatePointsUI(currentPoints - cost);
-                    alert("แลกรางวัลสำเร็จ (Demo)");
-                    return;
-                }
-
-                fetch(`${API_URL}?action=redeem&phone=${currentUser}&cost=${cost}`, { method: 'POST' })
+                fetch(`${API_URL}?action=redeem&phone=${currentUser}&cost=${cost}&rewardName=${name}`, { method: 'POST' })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === 'success') {
-                            updatePointsUI(data.newPoints);
+                            updatePointsUI(data.points);
                             alert("แลกรางวัลสำเร็จ!");
                         } else {
                             alert("เกิดข้อผิดพลาด: " + data.message);
@@ -449,23 +411,15 @@
                     });
             };
 
-            // --- POINT TIMER LOGIC ---
             function startPointTimer() {
                 if (pointTimer) clearInterval(pointTimer);
                 if (!currentUser) return;
-                
-                // Add point every 60 seconds
                 pointTimer = setInterval(() => {
                     if (!player.paused) {
-                        // Local update first for instant feedback
                         updatePointsUI(parseInt(currentPoints) + 1);
-                        
-                        // Sync with server
-                        if (API_URL) {
-                            fetch(`${API_URL}?action=addPoint&phone=${currentUser}`, { method: 'POST' });
-                        }
+                        fetch(`${API_URL}?action=addPoint&phone=${currentUser}`, { method: 'POST' });
                     }
-                }, 60000); // 1 Minute
+                }, 60000); 
             }
 
             function stopPointTimer() {
@@ -473,67 +427,35 @@
                 pointTimer = null;
             }
 
-            // --- STANDARD PLAYER LOGIC ---
-            function togglePlay() {
-                if (isPlaying) {
-                    player.pause();
-                    player.src = "";
-                    player.load();
-                    isPlaying = false;
-                    iconPlay.classList.remove('hidden');
-                    iconPause.classList.add('hidden');
-                    stopPointTimer(); // Stop counting
-                } else {
-                    player.src = urls.stream;
-                    player.load();
-                    const playPromise = player.play();
-                    if (playPromise !== undefined) {
-                        playPromise.then(() => {
-                            isPlaying = true;
-                            iconPlay.classList.add('hidden');
-                            iconPause.classList.remove('hidden');
-                            updateTrackData();
-                            startPointTimer(); // Start counting
-                        }).catch(e => { if (e.name !== 'AbortError') alert("ไม่สามารถเล่นเพลงได้"); });
-                    }
-                }
-            }
-
-            playBtn.addEventListener('click', togglePlay);
-            volumeSlider.addEventListener('input', (e) => { player.volume = e.target.value; });
-            
-            // ... (Rest of existing DJ and Track logic remains the same) ...
-            // Modal for Request
+            // --- UI HANDLERS ---
+            // Request Modal
             const openRequestBtn = document.getElementById('open-request-btn');
             const closeRequestBtn = document.getElementById('close-modal-btn');
             
             if(openRequestBtn) openRequestBtn.addEventListener('click', () => {
-                requestModal.classList.remove('hidden');
-                requestModal.querySelector('div').classList.remove('scale-95');
-                requestModal.querySelector('div').classList.add('scale-100');
-                requestModal.classList.remove('opacity-0');
-                // Load iframe script here
+                requestModal.classList.remove('hidden'); requestModal.classList.remove('opacity-0'); requestModal.querySelector('div').classList.add('scale-100');
                 const rc = document.getElementById('request-container');
                 if(!rc.querySelector('iframe')) {
-                   rc.innerHTML = `<iframe src="https://embed.radio.co/request/w75f0bc0" width="100%" height="600" style="border:none;"></iframe>`;
+                    rc.innerHTML = `<iframe src="https://embed.radio.co/request/w75f0bc0" width="100%" height="600" style="border:none;"></iframe>`;
                 }
             });
+            if(closeRequestBtn) closeRequestBtn.addEventListener('click', () => { requestModal.classList.add('opacity-0'); setTimeout(() => requestModal.classList.add('hidden'), 300); });
+            requestModal.addEventListener('click', (e) => { if(e.target===requestModal) document.getElementById('close-modal-btn').click(); });
             
-            if(closeRequestBtn) closeRequestBtn.addEventListener('click', () => {
-                requestModal.classList.add('opacity-0');
-                setTimeout(() => requestModal.classList.add('hidden'), 300);
+            // Share
+            document.getElementById('share-btn').addEventListener('click', async () => {
+                const text = `🎵 กำลังฟัง: ${trackTitleEl.textContent} - ${trackArtistEl.textContent} ที่ VIBE 24`;
+                if(navigator.share) { try{await navigator.share({title:'VIBE 24',text:text,url:window.location.href});}catch(e){} }
+                else { try{await navigator.clipboard.writeText(text+" "+window.location.href); alert("คัดลอกลิงก์แล้ว!");}catch(e){} }
             });
 
-            // DJ Logic ...
-            const djNameEl = document.getElementById('dj-name');
-            const djTimeEl = document.getElementById('dj-time');
-            const djImageEl = document.getElementById('dj-image');
-
+            // --- DJ Logic ---
             function updateDJCard() {
                 const now = new Date();
                 const day = now.getDay();
                 const hour = now.getHours();
                 let currentShow = null;
+
                 for (const show of djSchedule) {
                     const dayMatch = Array.isArray(show.days) ? show.days.includes(day) : show.day === day;
                     if (dayMatch && hour >= show.start && hour < show.end) {
@@ -541,20 +463,24 @@
                         break;
                     }
                 }
+
                 let newName = defaultDJ.name;
                 let newTime = defaultDJ.timeLabel;
                 let newImage = defaultDJ.image;
                 let isLive = false;
+
                 if (currentShow) {
                     newName = currentShow.name;
                     newTime = currentShow.timeLabel;
                     newImage = currentShow.image;
                     isLive = true;
                 }
+
                 if (djNameEl.textContent !== newName || djImageEl.src !== newImage) {
                     djNameEl.textContent = newName;
                     djTimeEl.textContent = newTime;
                     djImageEl.src = newImage;
+                    
                     if (isLive) {
                         djImageEl.style.objectFit = "cover";
                         djImageEl.style.objectPosition = "top";
@@ -569,36 +495,67 @@
                 }
             }
 
-            async function updateTrackData() {
-                // ... same logic as before ...
-                 let artworkUrl = defaultArtwork;
-                let fullTitle = "VIBE 24 - Music Station";
-                let artist = "VIBE 24";
-                let title = "Music Station";
-
-                try {
-                    const response = await fetch(`${urls.status}?t=${Date.now()}`);
-                    if (response.ok) {
-                        const data = await response.json();
-                        const track = data.current_track || {};
-                        if (track.title) fullTitle = track.title;
-                        if (track.artwork_url_large && track.artwork_url_large !== 'null') artworkUrl = track.artwork_url_large;
-                        else if (track.artwork_url && track.artwork_url !== 'null') artworkUrl = track.artwork_url;
-                    }
-                } catch (e) {}
-
-                if (/^<[\.\s]*>$/.test(fullTitle) || (fullTitle.includes("<") && fullTitle.includes(">"))) {
-                    fullTitle = "VIBE 24 - Music Station";
+            // --- Player Logic ---
+            player.addEventListener('error', (e) => {
+                console.error("Audio Error", e);
+                if (isPlaying) {
+                    isPlaying = false;
+                    iconPlay.classList.remove('hidden');
+                    iconPause.classList.add('hidden');
+                    alert("ไม่สามารถเชื่อมต่อสัญญาณเสียงได้");
                 }
+            });
 
+            // --- SCRAPER FOR CURRENT & NEXT SONG (BYPASS CORS) ---
+            function fetchRadioScripts() {
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+                
+                // Add timestamp to both URLs
+                const songSrc = `${urls.songScript}?t=${Date.now()}`;
+                const nextSrc = `${urls.nextScript}?t=${Date.now()}`;
+
+                const doc = iframe.contentWindow.document;
+                doc.open();
+                // Write two divs, one for each script
+                doc.write(`
+                    <html><body>
+                        <div id="song-data"><script src="${songSrc}"><\/script></div>
+                        <div id="next-data"><script src="${nextSrc}"><\/script></div>
+                    </body></html>
+                `);
+                doc.close();
+
+                iframe.onload = function() {
+                    try {
+                        const songDiv = iframe.contentWindow.document.getElementById('song-data');
+                        const nextDiv = iframe.contentWindow.document.getElementById('next-data');
+                        
+                        if (songDiv) processCurrentSong(songDiv.innerText);
+                        if (nextDiv) processNextSong(nextDiv.innerText);
+                        
+                    } catch (e) { console.error("Scrape error", e); }
+                    
+                    setTimeout(() => { if(document.body.contains(iframe)) document.body.removeChild(iframe); }, 100);
+                };
+            }
+
+            function processCurrentSong(text) {
+                if (!text) return;
+                text = text.trim();
+                
+                // Artist - Title logic
                 const separator = /\s*-\s*|\s*–\s*/;
-                if (separator.test(fullTitle)) {
-                    const parts = fullTitle.split(separator);
+                let artist = "VIBE 24";
+                let title = text;
+
+                if (separator.test(text)) {
+                    const parts = text.split(separator);
                     artist = parts[0].trim();
                     title = parts.slice(1).join(" - ").trim();
                 } else {
-                    title = fullTitle;
-                    artist = "VIBE 24"; 
+                    // Try to guess or leave as is
                 }
 
                 if (trackArtistEl) trackArtistEl.textContent = artist;
@@ -609,13 +566,88 @@
                         else artworkImage.classList.remove('art-shrink');
                     }
                 }
-                if (artworkImage && artworkImage.src !== artworkUrl) artworkImage.src = artworkUrl;
+                
+                // Update Metadata
+                if ('mediaSession' in navigator) {
+                     navigator.mediaSession.metadata = new MediaMetadata({
+                        title: title,
+                        artist: artist,
+                        album: "VIBE 24 Live",
+                        artwork: [{ src: artworkImage.src, sizes: '512x512', type: 'image/jpeg' }]
+                    });
+                }
             }
+
+            function processNextSong(text) {
+                if (!text) return;
+                text = text.trim();
+                // Just display whatever we get, no filter
+                if (nextSongDisplayEl) nextSongDisplayEl.textContent = text;
+            }
+
+            async function updateTrackData() {
+                // 1. Get Artwork from Status API (Reliable for image)
+                let artworkUrl = defaultArtwork;
+                try {
+                    const response = await fetch(`${urls.status}?t=${Date.now()}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        const track = data.current_track || {};
+                        if (track.artwork_url_large && track.artwork_url_large !== 'null') artworkUrl = track.artwork_url_large;
+                        else if (track.artwork_url && track.artwork_url !== 'null') artworkUrl = track.artwork_url;
+                    }
+                } catch (e) {}
+                
+                if (artworkImage && artworkImage.src !== artworkUrl) artworkImage.src = artworkUrl;
+
+                // 2. Get Text Data from Scripts (Reliable for text)
+                fetchRadioScripts();
+            }
+
+            function togglePlay() {
+                if (isPlaying) {
+                    player.pause();
+                    player.src = "";
+                    player.load();
+                    isPlaying = false;
+                    iconPlay.classList.remove('hidden');
+                    iconPause.classList.add('hidden');
+                    stopPointTimer();
+                } else {
+                    player.src = urls.stream;
+                    player.load();
+                    const playPromise = player.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            isPlaying = true;
+                            iconPlay.classList.add('hidden');
+                            iconPause.classList.remove('hidden');
+                            updateTrackData();
+                            startPointTimer();
+                            if ('mediaSession' in navigator) {
+                                navigator.mediaSession.playbackState = "playing";
+                                navigator.mediaSession.setActionHandler('play', togglePlay);
+                                navigator.mediaSession.setActionHandler('pause', togglePlay);
+                            }
+                        }).catch(e => { if (e.name !== 'AbortError') alert("ไม่สามารถเล่นเพลงได้"); });
+                    }
+                }
+            }
+
+            playBtn.addEventListener('click', togglePlay);
+            volumeSlider.addEventListener('input', (e) => { player.volume = e.target.value; });
+            player.volume = 0.8;
 
             updateTrackData();
             setInterval(updateTrackData, 10000);
             updateDJCard();
             setInterval(updateDJCard, 60000);
+
+            if (artworkImage) {
+                artworkImage.onerror = function() {
+                    if (this.src !== defaultArtwork) this.src = defaultArtwork;
+                };
+            }
         });
     </script>
 </body>
