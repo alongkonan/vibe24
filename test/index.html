@@ -81,7 +81,8 @@
       font-weight:900;
       font-size:20px;
       text-transform:uppercase;
-    }.brand .name small{
+    }
+    .brand .name small{
       display:block;
       opacity:.85;
       font-weight:500;
@@ -151,7 +152,8 @@
       font-weight:800;
       letter-spacing:.3px;
       font-size:17px;
-    }.cardHeader .sub{
+    }
+    .cardHeader .sub{
       font-size:12px;
       opacity:.78;
     }
@@ -283,6 +285,14 @@
 
     /* Make Radio.co embed scripts behave inside our containers */
     .embedFix > *{max-width:100% !important}
+  /* ซ่อนแถบ Now Playing ที่ Radio.co inject มาด้านล่าง */
+    iframe[src*="radio.co"],
+    .radio-player,
+    .rc-nowplaying,
+    .now-playing,
+    body > div[style*="position: fixed"][style*="bottom"]{
+      display:none !important;
+    }
   </style>
 </head>
 
