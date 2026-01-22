@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VIBE 24 • วิทยุออนไลน์</title>
+
+  <!-- Fonts (ตาม CI แนะนำ Montserrat + Sarabun/Prompt) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --red:#E31E24;      /* VIBE Red */
+      --black:#000000;    /* VIBE Black */
+      --white:#FFFFFF;    /* VIBE White */
+      --gray:#333333;     /* Secondary Grey */
+      --bg:#0b0b0c;
+      --card:rgba(255,255,255,.06);
+      --card2:rgba(255,255,255,.10);
+      --stroke:rgba(255,255,255,.12);
+      --shadow: 0 18px 40px rgba(0,0,0,.45);
+      --radius: 18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Prompt', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:rgba(255,255,255,.92);
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(227,30,36,.25), transparent 60%),
+        radial-gradient(900px 500px at 80% 20%, rgba(255,255,255,.08), transparent 55%),
+        linear-gradient(180deg, #060607, #0d0d10 50%, #070708);
+      overflow-x:hidden;
+    }
+
+    a{color:inherit}
+
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:28px 18px 40px;
+    }
+
+    /* Header */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:14px 16px;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:220px;
+    }
+    .brand img{
+      width:44px;height:44px;
+      border-radius:12px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      padding:6px;
+    }
+    .brand .name{
+      line-height:1.1;
+    }
+    .brand .name b{
+      display:block;
+      font-family:'Montserrat', sans-serif;
+      letter-spacing:.6px;
+      font-weight:900;
+      font-size:18px;
+    }
+    .brand .name small{
+      display:block;
+      opacity:.85;
+      font-weight:500;
+      font-size:13px;
+    }
+
+    .right{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .pill{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding:8px 12px;
+      background:rgba(0,0,0,.24);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      font-size:13px;
+      color:rgba(255,255,255,.88);
+      user-select:none;
+    }
+    .dot{
+      width:8px;height:8px;
+      border-radius:50%;
+      background:var(--red);
+      box-shadow:0 0 0 4px rgba(227,30,36,.15);
+      animation:pulse 1.6s infinite;
+    }
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.4)}}
+
+    /* Layout */
+    .grid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap:16px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr;}
+      .brand{min-width:auto;}
+    }
+
+    .card{
+      background:linear-gradient(180deg, var(--card), rgba(255,255,255,.03));
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .cardHeader{
+      padding:16px 16px 12px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:12px;
+    }
+    .cardHeader h2{
+      margin:0;
+      font-family:'Montserrat', sans-serif;
+      font-weight:900;
+      letter-spacing:.4px;
+      font-size:16px;
+    }
+    .cardHeader .sub{
+      font-size:12px;
+      opacity:.78;
+    }
+
+    .cardBody{padding:16px;}
+
+    /* Player */
+    .player{
+      display:grid;
+      grid-template-columns: 160px 1fr;
+      gap:16px;
+      align-items:center;
+    }
+    @media (max-width: 520px){
+      .player{grid-template-columns:1fr;}
+    }
+
+    .artbox{
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.25);
+      aspect-ratio:1/1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+    .artbox .fallback{
+      width:64px;height:64px;
+      border-radius:18px;
+      background:rgba(227,30,36,.14);
+      border:1px solid rgba(227,30,36,.45);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:'Montserrat', sans-serif;
+      font-weight:900;
+      letter-spacing:.5px;
+      color:rgba(255,255,255,.9);
+    }
+
+    .playerMain{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .songLine{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .songLine label{
+      font-size:12px;
+      opacity:.70;
+      letter-spacing:.2px;
+    }
+    .songLine .value{
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      min-height:42px;
+      display:flex;
+      align-items:center;
+      font-weight:600;
+    }
+
+    audio{
+      width:100%;
+      border-radius:14px;
+      background:rgba(255,255,255,.08);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.14);
+      background:linear-gradient(180deg, rgba(227,30,36,.95), rgba(227,30,36,.70));
+      color:var(--white);
+      padding:10px 14px;
+      border-radius:14px;
+      font-weight:800;
+      font-family:'Montserrat', sans-serif;
+      letter-spacing:.3px;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease;
+    }
+    .btn:hover{transform:translateY(-1px);filter:brightness(1.03)}
+    .btn:active{transform:translateY(0px);filter:brightness(.98)}
+
+    .btnGhost{
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      font-family:'Prompt', sans-serif;
+      font-weight:700;
+      letter-spacing:0;
+    }
+
+    /* Requests */
+    .requestFrame{
+      width:100%;
+      height:520px;
+      border:0;
+      border-radius:16px;
+      overflow:hidden;
+      background:rgba(0,0,0,.25);
+    }
+
+    /* Footer */
+    footer{
+      margin-top:16px;
+      padding:14px 6px;
+      opacity:.75;
+      font-size:12px;
+      text-align:center;
+    }
+
+    /* Tiny accent line */
+    .accent{
+      height:3px;
+      background:linear-gradient(90deg, rgba(227,30,36,0), var(--red), rgba(227,30,36,0));
+    }
+
+    /* Make Radio.co embed scripts behave inside our containers */
+    .embedFix > *{max-width:100% !important}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <div class="topbar">
+      <div class="brand">
+        <img src="https://img2.pic.in.th/1000074512.png" alt="VIBE 24 Logo" />
+        <div class="name">
+          <b>VIBE 24</b>
+          <small>คลื่นเพลงฮิต...ต่อเนื่อง 24 ชั่วโมง</small>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="pill"><span class="dot"></span> LIVE</div>
+        <div class="pill" id="status">พร้อมเล่น</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT: Player + now/next -->
+      <section class="card">
+        <div class="accent"></div>
+        <div class="cardHeader">
+          <div>
+            <h2>ฟังสด</h2>
+            <div class="sub">สตรีมหลักของ VIBE 24</div>
+          </div>
+        </div>
+
+        <div class="cardBody">
+          <div class="player">
+            <div class="artbox" aria-label="Artwork">
+              <!-- Radio.co Artwork Embed -->
+              <div class="embedFix" id="artwork">
+                <div class="fallback">V24</div>
+              </div>
+            </div>
+
+            <div class="playerMain">
+              <audio id="audio" controls preload="none" src="https://streaming.radio.co/sbf4f79825/listen"></audio>
+
+              <div class="actions">
+                <button class="btn" id="btnPlay">▶ เล่น</button>
+                <button class="btn btnGhost" id="btnStop">■ หยุด</button>
+              </div>
+
+              <div class="songLine">
+                <label>เพลงที่กำลังเล่น</label>
+                <div class="value embedFix" id="nowSong">กำลังโหลด…</div>
+              </div>
+
+              <div class="songLine">
+                <label>เพลงถัดไป</label>
+                <div class="value embedFix" id="nextSong">กำลังโหลด…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Track Requests -->
+      <section class="card">
+        <div class="accent"></div>
+        <div class="cardHeader">
+          <div>
+            <h2>ขอเพลง (Track Requests)</h2>
+            <div class="sub">ส่งคำขอเพลงได้ที่นี่</div>
+          </div>
+        </div>
+        <div class="cardBody">
+          <!-- Radio.co Request Embed (กำหนดไว้ 900x500 ตามที่ให้มา) -->
+          <div class="embedFix" id="requestEmbed"></div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      © <span id="y"></span> VIBE 24 • Powered by Radio.co
+    </footer>
+  </div>
+
+  <!-- ========== Radio.co Embeds ========== -->
+  <!-- Artwork -->
+  <script src="https://embed.radio.co/embed/sbf4f79825/artwork.js"></script>
+  <!-- Current song title -->
+  <script src="https://embed.radio.co/embed/sbf4f79825/song.js"></script>
+  <!-- Next song title -->
+  <script src="https://embed.radio.co/embed/sbf4f79825/next.js"></script>
+  <!-- Track Requests -->
+  <script src="https://embed.radio.co/request/w75f0bc0.js"></script>
+
+  <script>
+    // ===== Basic player controls =====
+    const audio = document.getElementById('audio');
+    const statusEl = document.getElementById('status');
+    const btnPlay = document.getElementById('btnPlay');
+    const btnStop = document.getElementById('btnStop');
+
+    const setStatus = (t) => statusEl.textContent = t;
+
+    btnPlay.addEventListener('click', async () => {
+      try{
+        await audio.play();
+      }catch(e){
+        setStatus('เบราว์เซอร์บล็อกการเล่นอัตโนมัติ: กด Play ในตัวเล่น');
+      }
+    });
+
+    btnStop.addEventListener('click', () => {
+      audio.pause();
+      audio.currentTime = 0;
+    });
+
+    audio.addEventListener('play', () => setStatus('กำลังเล่น'));
+    audio.addEventListener('pause', () => setStatus('หยุด/พัก'));
+    audio.addEventListener('waiting', () => setStatus('กำลังบัฟเฟอร์…'));
+    audio.addEventListener('stalled', () => setStatus('สัญญาณสะดุด…'));
+    audio.addEventListener('error', () => setStatus('เล่นไม่ได้ (ตรวจสอบลิงก์สตรีม)'));
+
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // ===== Hook Radio.co embeds into our layout =====
+    // Radio.co embed scripts typically write into the DOM by looking for specific containers.
+    // We provide safe "landing" areas and then copy text/artwork into our UI.
+
+    // 1) Artwork: radio.co artwork.js usually injects an <img> into the page.
+    // We'll move the first injected image into #artwork (if any) and keep a fallback otherwise.
+    const tryAdoptArtwork = () => {
+      const artWrap = document.getElementById('artwork');
+      // Find any images injected by the script
+      const injectedImg = document.querySelector('img[src*="radio.co"]');
+      if(injectedImg && !artWrap.querySelector('img')){
+        // Clear fallback
+        artWrap.innerHTML = '';
+        injectedImg.style.width = '100%';
+        injectedImg.style.height = '100%';
+        injectedImg.style.objectFit = 'cover';
+        injectedImg.style.display = 'block';
+        artWrap.appendChild(injectedImg);
+      }
+    };
+
+    // 2) Current / Next song title: radio.co song.js/next.js usually inject a span/div.
+    // We'll mirror their text into our styled boxes.
+    const mirrorSongText = () => {
+      const nowEl = document.getElementById('nowSong');
+      const nextEl = document.getElementById('nextSong');
+
+      // Attempt to detect injected elements by common patterns
+      const candidates = Array.from(document.querySelectorAll('body *'))
+        .filter(el => el.childElementCount === 0 && (el.textContent || '').trim().length > 0)
+        .slice(0, 400);
+
+      // Heuristic: Find text nodes that look like a track title and come from radio.co injected blocks
+      const injected = candidates.filter(el => {
+        const t = (el.textContent || '').trim();
+        if(t.length < 2 || t.length > 120) return false;
+        // avoid our own text
+        if(el.id === 'nowSong' || el.id === 'nextSong') return false;
+        // try to keep only radio.co injected wrappers
+        const html = (el.outerHTML || '').toLowerCase();
+        return html.includes('radio') || html.includes('embed') || html.includes('sbf4f79825');
+      });
+
+      // If we find at least 1 candidate, map first to now, second to next (best-effort)
+      if(injected[0]) nowEl.textContent = injected[0].textContent.trim();
+      if(injected[1]) nextEl.textContent = injected[1].textContent.trim();
+    };
+
+    // 3) Track request embed: the script injects an iframe. We'll place the first iframe into our request box.
+    const adoptRequestIframe = () => {
+      const holder = document.getElementById('requestEmbed');
+      const iframe = document.querySelector('iframe[src*="radio.co"]');
+      if(iframe && !holder.querySelector('iframe')){
+        iframe.width = '900';
+        iframe.height = '500';
+        iframe.style.width = '100%';
+        iframe.style.maxWidth = '900px';
+        iframe.style.height = '520px';
+        iframe.style.border = '0';
+        iframe.style.borderRadius = '16px';
+        iframe.style.display = 'block';
+        iframe.style.margin = '0 auto';
+        holder.appendChild(iframe);
+      }
+    };
+
+    // Run a few times because embeds may load async
+    const boot = () => {
+      tryAdoptArtwork();
+      mirrorSongText();
+      adoptRequestIframe();
+    };
+
+    boot();
+    setTimeout(boot, 800);
+    setTimeout(boot, 1800);
+    setInterval(() => {
+      tryAdoptArtwork();
+      mirrorSongText();
+    }, 5000);
+  </script>
+</body>
+</html>
