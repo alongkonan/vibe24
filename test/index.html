@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIBE 24 - คลื่นเพลงฮิต...ต่อเนื่อง 24 ชั่วโมง</title>
+    <title>VIBE 24 - The Hottest Hits</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
 
-    <!-- FontAwesome for Icons -->
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script>
@@ -23,16 +23,15 @@
                     colors: {
                         'vibe-red': '#E31E24',
                         'vibe-black': '#000000',
-                        'vibe-dark': '#1a1a1a',
-                        'vibe-gray': '#333333',
+                        'vibe-dark': '#121212',
+                        'vibe-gray': '#2a2a2a',
                     },
                     fontFamily: {
                         'sans': ['Prompt', 'sans-serif'],
-                        'display': ['Montserrat', 'sans-serif'],
+                        'display': ['Prompt', 'sans-serif'],
                     },
                     animation: {
-                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'spin-slow': 'spin 3s linear infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     }
                 }
             }
@@ -44,310 +43,257 @@
             background-color: #000000;
             color: #ffffff;
             font-family: 'Prompt', sans-serif;
-            overflow-x: hidden;
         }
 
-        h1, h2, h3, .brand-font {
-            font-family: 'Montserrat', sans-serif;
+        /* Vinyl Spin Animation */
+        .vinyl-spin {
+            animation: spin 8s linear infinite;
         }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1a1a1a; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #E31E24; 
-            border-radius: 4px;
-        }
-
-        /* Vinyl Animation for Artwork */
-        .artwork-container img {
-            border-radius: 50%; /* Make it round like vinyl */
-            animation: spin 10s linear infinite;
-            box-shadow: 0 0 30px rgba(227, 30, 36, 0.4);
-            border: 4px solid #1a1a1a;
-            width: 100%;
-            height: auto;
-            aspect-ratio: 1/1;
-            object-fit: cover;
-        }
-        
-        .artwork-container.paused img {
+        .vinyl-paused {
             animation-play-state: paused;
         }
-
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
 
-        /* Audio Visualizer Bars */
-        .visualizer-bar {
+        /* Equalizer Bars */
+        .bar {
             width: 6px;
             background: #E31E24;
-            margin: 0 2px;
-            border-radius: 999px;
-            animation: equalize 1s infinite;
+            border-radius: 4px;
+            animation: bounce 1s infinite ease-in-out;
+        }
+        @keyframes bounce {
+            0%, 100% { height: 10px; }
+            50% { height: 30px; }
         }
 
-        @keyframes equalize {
-            0% { height: 10px; }
-            50% { height: 40px; }
-            100% { height: 10px; }
-        }
-
-        /* Radio.co Script Styling Overrides (If possible via CSS) */
+        /* Override Radio.co injected styles to match theme */
         .radioco-nowPlaying {
-            color: white !important;
-            font-size: 1.2rem !important;
-            font-weight: 600 !important;
+            display: block;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 900;
+            font-size: clamp(2rem, 5vw, 3.5rem); /* Responsive Font Size */
+            line-height: 1.1;
+            color: white;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen bg-black text-white selection:bg-vibe-red selection:text-white">
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-black/90 backdrop-blur-md border-b border-gray-800">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo Area -->
             <div class="flex items-center gap-3">
-                <img src="https://img2.pic.in.th/1000074512.png" alt="VIBE 24 Logo" class="h-10 md:h-12 w-auto">
-                <div class="hidden md:block">
-                    <span class="text-vibe-red font-display font-black text-xl tracking-tighter">VIBE 24</span>
-                    <p class="text-xs text-gray-400 -mt-1">HITS NON-STOP 24 HRS</p>
+                <img src="https://img2.pic.in.th/1000074512.png" alt="VIBE 24" class="h-10 w-auto">
+                <div class="hidden sm:block leading-tight">
+                    <h1 class="font-display font-black text-xl text-white tracking-tighter">VIBE <span class="text-vibe-red">24</span></h1>
+                    <p class="text-[10px] text-gray-400 tracking-widest uppercase">Hits Non-Stop</p>
                 </div>
             </div>
-            
-            <div class="flex items-center gap-4">
-                <a href="#home" class="hover:text-vibe-red transition-colors text-sm font-medium">HOME</a>
-                <a href="#request" class="hover:text-vibe-red transition-colors text-sm font-medium">REQUEST</a>
-                <div class="flex items-center gap-2 bg-vibe-red/10 px-3 py-1 rounded-full border border-vibe-red/30">
-                    <span class="w-2 h-2 bg-vibe-red rounded-full animate-pulse"></span>
-                    <span class="text-vibe-red text-xs font-bold tracking-wider">LIVE</span>
+
+            <!-- Menu -->
+            <div class="flex items-center gap-6">
+                <a href="#player" class="text-sm font-bold hover:text-vibe-red transition-colors hidden sm:block">HOME</a>
+                <a href="#requests" class="text-sm font-bold hover:text-vibe-red transition-colors hidden sm:block">REQUESTS</a>
+                <div class="flex items-center gap-2 bg-vibe-red/20 border border-vibe-red px-3 py-1 rounded-full">
+                    <div class="w-2 h-2 bg-vibe-red rounded-full animate-ping"></div>
+                    <span class="text-xs font-bold text-vibe-red tracking-wider">LIVE</span>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Main Hero Section -->
-    <main id="home" class="flex-grow pt-24 pb-12 relative overflow-hidden flex flex-col items-center justify-center min-h-screen md:min-h-[80vh]">
+    <!-- Hero Player Section -->
+    <section id="player" class="relative flex-grow flex items-center justify-center pt-24 pb-12 overflow-hidden min-h-[85vh]">
         
-        <!-- Background Elements -->
-        <div class="absolute top-0 left-0 w-full h-full z-0 pointer-events-none">
-            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-vibe-red/20 rounded-full blur-[100px]"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-600/10 rounded-full blur-[80px]"></div>
-            <!-- Grid Pattern -->
-            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImEiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTTAgNDBMODAgMCIgc3Ryb2tlPSIjMzMzIiBzdHJva2Utd2lkdGg9IjAuNSIgZmlsbD0ibm9uZSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNhKSIvPjwvc3ZnPg==')] opacity-20"></div>
-        </div>
+        <!-- Background Glows -->
+        <div class="absolute top-1/4 left-0 w-96 h-96 bg-vibe-red/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-        <div class="container mx-auto px-4 z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
             
-            <!-- Left: Player Info -->
-            <div class="flex flex-col items-center md:items-start text-center md:text-left space-y-6">
+            <!-- Left Content: Info -->
+            <div class="order-2 lg:order-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-8">
                 
-                <div class="space-y-2">
-                    <h2 class="text-vibe-red font-bold tracking-widest text-sm uppercase mb-2"><i class="fas fa-signal mr-2"></i>Now On Air</h2>
-                    <!-- Song Title Script -->
-                    <div class="text-3xl md:text-5xl font-display font-black leading-tight text-white drop-shadow-lg min-h-[4rem]">
-                         <script src="https://embed.radio.co/embed/sbf4f79825/song.js"></script>
+                <!-- Song Info -->
+                <div class="space-y-2 w-full">
+                    <h2 class="text-vibe-red font-bold text-sm tracking-[0.2em] uppercase flex items-center justify-center lg:justify-start gap-2">
+                        <i class="fas fa-music animate-bounce"></i> Now Playing
+                    </h2>
+                    
+                    <!-- Song Title (Live Script) -->
+                    <div class="min-h-[4rem]">
+                        <script src="https://embed.radio.co/embed/sbf4f79825/song.js"></script>
                     </div>
-                </div>
 
-                <!-- Next Song -->
-                <div class="bg-gray-900/50 backdrop-blur-sm border-l-4 border-vibe-red p-3 rounded-r-lg w-full max-w-md">
-                    <p class="text-gray-400 text-xs uppercase mb-1">Coming Up Next</p>
-                    <div class="text-white font-medium truncate">
-                        <script src="https://embed.radio.co/embed/sbf4f79825/next.js"></script>
+                    <!-- Next Song (Live Script) -->
+                    <div class="mt-4 bg-white/5 backdrop-blur-sm border-l-4 border-vibe-red p-4 rounded-r-xl w-full max-w-lg mx-auto lg:mx-0">
+                        <p class="text-xs text-gray-400 uppercase mb-1">Coming Up Next</p>
+                        <div class="font-medium text-lg text-gray-200 truncate">
+                            <script src="https://embed.radio.co/embed/sbf4f79825/next.js"></script>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Controls -->
-                <div class="flex flex-col gap-6 w-full max-w-md mt-8">
-                    <!-- Audio Element (Hidden default controls) -->
-                    <audio id="radio-player" preload="none">
+                <div class="flex flex-col gap-6 w-full max-w-md">
+                    <!-- Audio Player -->
+                    <audio id="audio-stream" preload="none">
                         <source src="https://streaming.radio.co/sbf4f79825/listen" type="audio/mpeg">
-                        Your browser does not support the audio element.
                     </audio>
 
-                    <div class="flex items-center justify-center md:justify-start gap-6">
-                        <!-- Play/Pause Button -->
-                        <button id="play-btn" class="group relative w-20 h-20 rounded-full bg-vibe-red flex items-center justify-center shadow-[0_0_30px_rgba(227,30,36,0.5)] hover:scale-105 transition-all duration-300">
-                            <span class="absolute inset-0 rounded-full border border-white/20 animate-ping opacity-75"></span>
-                            <i id="play-icon" class="fas fa-play text-3xl text-white ml-2 group-hover:text-black transition-colors"></i>
+                    <div class="flex items-center justify-center lg:justify-start gap-6">
+                        <!-- Play Button -->
+                        <button id="play-btn" class="group relative w-20 h-20 rounded-full bg-vibe-red flex items-center justify-center shadow-[0_0_40px_rgba(227,30,36,0.4)] hover:scale-105 hover:shadow-[0_0_60px_rgba(227,30,36,0.6)] transition-all duration-300">
+                            <i id="play-icon" class="fas fa-play text-2xl text-white translate-x-1 group-hover:text-black transition-colors"></i>
                         </button>
-
-                        <!-- Volume Control -->
-                        <div class="flex items-center gap-3 bg-gray-800/50 px-4 py-2 rounded-full">
-                            <i class="fas fa-volume-up text-gray-400 text-sm"></i>
-                            <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.8" class="w-24 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-vibe-red">
+                        
+                        <!-- Volume -->
+                        <div class="h-1 bg-gray-800 rounded-full w-32 relative group cursor-pointer overflow-hidden">
+                            <div id="volume-bar" class="absolute top-0 left-0 h-full bg-vibe-red w-[80%]"></div>
+                            <input type="range" id="volume-input" min="0" max="1" step="0.1" value="0.8" class="absolute inset-0 opacity-0 cursor-pointer">
                         </div>
                     </div>
 
-                    <!-- Visualizer -->
-                    <div class="h-10 flex items-end justify-center md:justify-start gap-1 opacity-50" id="visualizer">
-                        <!-- Bars will be generated by JS -->
+                    <!-- Fake Visualizer -->
+                    <div class="h-8 flex items-end justify-center lg:justify-start gap-1" id="visualizer">
+                        <!-- Bars injected via JS -->
                     </div>
                 </div>
             </div>
 
-            <!-- Right: Artwork (Vinyl Style) -->
-            <div class="flex justify-center relative">
-                <div class="relative w-64 h-64 md:w-96 md:h-96">
-                    <!-- Artwork Container -->
-                    <div id="artwork-wrapper" class="artwork-container paused w-full h-full relative z-10">
-                        <!-- Radio.co Artwork Script -->
-                        <!-- Note: The script outputs an img tag usually. We wrap it to style it. -->
-                        <div class="w-full h-full overflow-hidden rounded-full border-4 border-gray-900 bg-black flex items-center justify-center">
+            <!-- Right Content: Vinyl Artwork -->
+            <div class="order-1 lg:order-2 flex justify-center items-center">
+                <div class="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px]">
+                    <!-- Outer Glow -->
+                    <div class="absolute inset-0 bg-vibe-red/20 rounded-full blur-3xl animate-pulse-slow"></div>
+                    
+                    <!-- Vinyl Container -->
+                    <div id="vinyl" class="relative w-full h-full rounded-full border-8 border-gray-900 bg-black shadow-2xl vinyl-spin vinyl-paused overflow-hidden flex items-center justify-center">
+                        
+                        <!-- Artwork Script Container -->
+                        <!-- We use JS MutationObserver to style the IMG tag that this script injects -->
+                        <div id="artwork-container" class="w-full h-full bg-gray-900">
                              <script src="https://embed.radio.co/embed/sbf4f79825/artwork.js"></script>
                         </div>
-                        <!-- Center hole for Vinyl look -->
-                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 md:w-12 md:h-12 bg-black rounded-full border-2 border-gray-700 z-20 flex items-center justify-center">
-                            <div class="w-2 h-2 bg-gray-500 rounded-full"></div>
+                        
+                        <!-- Vinyl Center Hole -->
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-black rounded-full border-4 border-gray-800 flex items-center justify-center z-10 pointer-events-none">
+                            <div class="w-3 h-3 bg-gray-200 rounded-full"></div>
                         </div>
-                    </div>
-                    
-                    <!-- Glow effect behind -->
-                    <div class="absolute inset-0 bg-vibe-red/30 rounded-full blur-3xl -z-10 transform scale-90"></div>
-                </div>
-            </div>
-
-        </div>
-    </main>
-
-    <!-- Request Section -->
-    <section id="request" class="bg-vibe-dark py-16 border-t border-gray-800">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl md:text-4xl font-display font-black text-white mb-2">SONG REQUEST</h2>
-                <div class="w-24 h-1 bg-vibe-red mx-auto rounded-full"></div>
-                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">
-                    อยากฟังเพลงไหน? ขอเข้ามาได้เลย ทีมงาน VIBE 24 จัดให้ต่อเนื่องตลอด 24 ชั่วโมง
-                </p>
-            </div>
-
-            <div class="flex justify-center">
-                <div class="w-full max-w-[950px] bg-white rounded-xl overflow-hidden shadow-2xl">
-                    <!-- Radio.co Request Script Wrapper -->
-                    <div class="overflow-x-auto">
-                        <div style="min-width: 900px; height: 500px;" class="flex items-center justify-center bg-gray-100">
-                            <script src="https://embed.radio.co/request/w75f0bc0.js"></script>
-                        </div>
+                        
+                        <!-- Shine Reflection -->
+                        <div class="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent rounded-full pointer-events-none z-20"></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-black py-8 border-t border-vibe-red/30">
-        <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-2">
-                <img src="https://img2.pic.in.th/1000074512.png" alt="Logo" class="h-8 w-auto grayscale hover:grayscale-0 transition-all">
-                <span class="text-gray-500 text-sm">© 2024 VIBE 24. All Rights Reserved.</span>
+    <!-- Request Section -->
+    <section id="requests" class="bg-vibe-gray py-16 border-t border-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col items-center mb-10">
+                <h2 class="font-display font-black text-3xl text-white uppercase tracking-wider">Song Requests</h2>
+                <div class="w-20 h-1 bg-vibe-red mt-4 rounded-full"></div>
             </div>
-            
-            <div class="flex gap-6">
-                <a href="#" class="text-gray-500 hover:text-vibe-red transition-colors"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="text-gray-500 hover:text-vibe-red transition-colors"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="text-gray-500 hover:text-vibe-red transition-colors"><i class="fab fa-tiktok"></i></a>
-                <a href="#" class="text-gray-500 hover:text-vibe-red transition-colors"><i class="fab fa-line"></i></a>
+
+            <div class="bg-white rounded-xl shadow-2xl overflow-hidden max-w-5xl mx-auto">
+                <div class="w-full overflow-x-auto flex justify-center bg-gray-50 p-4">
+                    <!-- Request Script Container -->
+                    <div class="relative flex items-center justify-center bg-gray-100" style="min-width: 900px; min-height: 500px;">
+                        <script src="https://embed.radio.co/request/w75f0bc0.js"></script>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
+
+    <footer class="bg-black py-6 border-t border-gray-900 text-center text-gray-600 text-sm">
+        <p>&copy; 2024 VIBE 24. All Rights Reserved.</p>
     </footer>
 
-    <!-- JavaScript Logic -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const player = document.getElementById('radio-player');
-            const playBtn = document.getElementById('play-btn');
-            const playIcon = document.getElementById('play-icon');
-            const artworkWrapper = document.getElementById('artwork-wrapper');
-            const volumeSlider = document.getElementById('volume-slider');
-            const visualizer = document.getElementById('visualizer');
+        // Visualizer Logic
+        const visualizer = document.getElementById('visualizer');
+        for (let i = 0; i < 20; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'bar';
+            bar.style.height = Math.floor(Math.random() * 20 + 5) + 'px';
+            bar.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
+            visualizer.appendChild(bar);
+        }
 
-            let isPlaying = false;
+        // Player Logic
+        const audio = document.getElementById('audio-stream');
+        const playBtn = document.getElementById('play-btn');
+        const playIcon = document.getElementById('play-icon');
+        const vinyl = document.getElementById('vinyl');
+        const volumeInput = document.getElementById('volume-input');
+        const volumeBar = document.getElementById('volume-bar');
+        const artworkContainer = document.getElementById('artwork-container');
 
-            // Generate Fake Visualizer Bars
-            for(let i=0; i<16; i++) {
-                const bar = document.createElement('div');
-                bar.className = 'visualizer-bar';
-                // Randomize animation duration for variety
-                bar.style.animationDuration = (0.5 + Math.random() * 0.5) + 's';
-                visualizer.appendChild(bar);
+        let isPlaying = false;
+
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+                playIcon.classList.add('translate-x-1');
+                vinyl.classList.add('vinyl-paused');
+                // Stop visualizer bars
+                document.querySelectorAll('.bar').forEach(b => b.style.animationPlayState = 'paused');
+            } else {
+                audio.play().then(() => {
+                    playIcon.classList.remove('fa-play');
+                    playIcon.classList.remove('translate-x-1');
+                    playIcon.classList.add('fa-pause');
+                    vinyl.classList.remove('vinyl-paused');
+                    // Start visualizer bars
+                    document.querySelectorAll('.bar').forEach(b => b.style.animationPlayState = 'running');
+                    isPlaying = true;
+                }).catch(error => {
+                    console.error("Playback failed:", error);
+                    // Usually due to browser autoplay policy or stream issues
+                });
             }
-            
-            // Function to stop animations
-            const stopVisualizer = () => {
-                const bars = document.querySelectorAll('.visualizer-bar');
-                bars.forEach(bar => {
-                    bar.style.animation = 'none';
-                    bar.style.height = '5px';
-                });
-            };
+            isPlaying = !isPlaying;
+        });
 
-            // Function to start animations
-            const startVisualizer = () => {
-                const bars = document.querySelectorAll('.visualizer-bar');
-                bars.forEach(bar => {
-                    bar.style.animation = `equalize ${0.5 + Math.random() * 0.5}s infinite`;
-                });
-            };
+        // Volume Logic
+        volumeInput.addEventListener('input', (e) => {
+            const val = e.target.value;
+            audio.volume = val;
+            volumeBar.style.width = (val * 100) + '%';
+        });
 
-            // Init state
-            stopVisualizer();
+        // Initialize Paused State
+        document.querySelectorAll('.bar').forEach(b => b.style.animationPlayState = 'paused');
 
-            playBtn.addEventListener('click', () => {
-                if (isPlaying) {
-                    player.pause();
-                    playIcon.className = 'fas fa-play text-3xl text-white ml-2';
-                    playBtn.classList.remove('scale-90');
-                    artworkWrapper.classList.add('paused');
-                    stopVisualizer();
-                    isPlaying = false;
-                } else {
-                    // Reload source to ensure live point if paused for too long, 
-                    // but for simple pause/play standard behavior is usually fine.
-                    // To force "Live", we can reset src, but it might buffer.
-                    // player.load(); 
-                    
-                    player.play().then(() => {
-                        playIcon.className = 'fas fa-pause text-3xl text-white';
-                        playBtn.classList.add('scale-90');
-                        artworkWrapper.classList.remove('paused');
-                        startVisualizer();
-                        isPlaying = true;
-                    }).catch(error => {
-                        console.error("Playback failed:", error);
-                        alert("Cannot play stream right now. Please try again.");
-                    });
+        // *** Artwork Styler ***
+        // Radio.co script inserts an <img> tag. We need to force it to be round and responsive.
+        // We use MutationObserver to watch for when the script adds the image.
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.addedNodes.length) {
+                    const img = artworkContainer.querySelector('img');
+                    if (img) {
+                        img.style.width = '100%';
+                        img.style.height = '100%';
+                        img.style.objectFit = 'cover';
+                        img.style.borderRadius = '50%';
+                        // Optional: Add specific ID or class if Radio.co doesn't provide one
+                    }
                 }
             });
-
-            volumeSlider.addEventListener('input', (e) => {
-                player.volume = e.target.value;
-            });
-
-            // Handle Artwork Script Style Injection
-            // Because Radio.co script injects an IMG tag directly, we want to ensure it fits our circle
-            // The MutationObserver watches for when the script loads the image
-            const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.addedNodes.length) {
-                        const img = artworkWrapper.querySelector('img');
-                        if (img) {
-                            img.style.width = '100%';
-                            img.style.height = '100%';
-                            img.style.objectFit = 'cover';
-                            img.style.borderRadius = '50%';
-                        }
-                    }
-                });
-            });
-
-            observer.observe(artworkWrapper, { childList: true, subtree: true });
         });
+
+        observer.observe(artworkContainer, { childList: true, subtree: true });
     </script>
 </body>
 </html>
