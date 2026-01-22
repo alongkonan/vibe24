@@ -2,440 +2,648 @@
 <html lang="th">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#0b0f1a" />
-  <title>VIBE 24 • Online Radio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#E31E24" />
+  <title>VIBE 24 | ฟังสด</title>
+
+  <!-- Fonts (ตาม CI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet" />
+
   <style>
     :root{
-      --bg:#060814;
-      --card: rgba(255,255,255,.08);
-      --card2: rgba(255,255,255,.12);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.68);
-      --stroke: rgba(255,255,255,.16);
-      --shadow: 0 24px 80px rgba(0,0,0,.55);
-      --radius: 22px;
+      --red:#E31E24;     /* VIBE Red */
+      --black:#000;      /* VIBE Black */
+      --white:#fff;      /* VIBE White */
+      --grey:#333;       /* Secondary Grey */
+      --card: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.12);
+      --shadow: 0 14px 40px rgba(0,0,0,.35);
+      --radius: 18px;
     }
+
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Thai", sans-serif;
-      color:var(--text);
+      font-family:"Sarabun", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background:
-        radial-gradient(1200px 800px at 10% 10%, rgba(140, 80, 255,.35), transparent 60%),
-        radial-gradient(1000px 700px at 90% 20%, rgba(0, 240, 255,.22), transparent 55%),
-        radial-gradient(900px 700px at 50% 100%, rgba(255, 0, 160,.18), transparent 55%),
-        var(--bg);
-      min-height:100vh;
+        radial-gradient(900px 600px at 15% 10%, rgba(227,30,36,.20), transparent 60%),
+        radial-gradient(800px 520px at 95% 20%, rgba(227,30,36,.10), transparent 55%),
+        linear-gradient(180deg, #0b0b0b, #000);
+      color:var(--white);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    a{color:inherit}
+
+    .wrap{
+      min-height:100%;
+      display:flex;
+      flex-direction:column;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(0,0,0,.55);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .topbar{
+      max-width:1100px;
+      margin:0 auto;
+      padding:14px 16px;
       display:flex;
       align-items:center;
-      justify-content:center;
-      padding:28px 16px;
+      justify-content:space-between;
+      gap:12px;
     }
-    .app{
-      width:min(980px, 100%);
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .brand img{
+      width:46px;
+      height:46px;
+      object-fit:contain;
+      border-radius:10px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      padding:6px;
+    }
+
+    .brand .name{
+      display:flex;
+      flex-direction:column;
+      line-height:1.15;
+      min-width:0;
+    }
+
+    .brand .name strong{
+      font-family:"Montserrat", system-ui;
+      letter-spacing:.3px;
+      font-weight:900;
+      font-size:18px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .brand .name span{
+      font-size:12.5px;
+      color: rgba(255,255,255,.75);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .pill{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      border-radius:999px;
+      box-shadow: 0 10px 26px rgba(0,0,0,.18);
+    }
+
+    .live-dot{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      background: var(--red);
+      box-shadow: 0 0 0 0 rgba(227,30,36,.55);
+      animation:pulse 1.6s infinite;
+    }
+
+    @keyframes pulse{
+      0%{box-shadow:0 0 0 0 rgba(227,30,36,.55)}
+      70%{box-shadow:0 0 0 12px rgba(227,30,36,0)}
+      100%{box-shadow:0 0 0 0 rgba(227,30,36,0)}
+    }
+
+    .pill .txt{font-size:13px; color:rgba(255,255,255,.85)}
+
+    main{
+      max-width:1100px;
+      margin:0 auto;
+      width:100%;
+      padding:22px 16px 36px;
       display:grid;
-      grid-template-columns: 1.05fr .95fr;
+      grid-template-columns: 1.1fr .9fr;
       gap:18px;
+      align-items:start;
     }
-    @media (max-width: 860px){
-      .app{grid-template-columns:1fr}
+
+    @media (max-width: 920px){
+      main{grid-template-columns:1fr;}
     }
+
     .card{
-      background: linear-gradient(180deg, var(--card2), var(--card));
-      border:1px solid var(--stroke);
       border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card);
       box-shadow: var(--shadow);
       overflow:hidden;
     }
-    .header{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      padding:18px 18px 12px;
+
+    .card-head{
+      padding:16px 16px 0;
     }
-    .logo{
-      width:56px;height:56px;border-radius:16px;
-      background: rgba(255,255,255,.10);
-      border:1px solid var(--stroke);
-      display:grid;place-items:center;
-      overflow:hidden;
-      flex:0 0 auto;
-    }
-    .logo img{width:100%;height:100%;object-fit:cover}
-    .brand h1{
+
+    .card-head h2{
       margin:0;
-      font-size:20px;
-      letter-spacing:.3px;
-      line-height:1.2;
+      font-family:"Montserrat", system-ui;
+      font-weight:900;
+      font-size:18px;
+      letter-spacing:.2px;
     }
-    .brand p{
-      margin:6px 0 0;
-      color: var(--muted);
-      font-size:13px;
-    }
-    .main{
-      padding: 0 18px 18px;
+
+    .muted{color:rgba(255,255,255,.72)}
+
+    .hero{
+      padding:16px;
       display:grid;
-      grid-template-columns: 1fr;
-      gap:14px;
-    }
-    .player{
-      display:flex;
+      grid-template-columns: 160px 1fr;
       gap:14px;
       align-items:center;
-      padding:14px;
-      border-radius: 18px;
-      background: rgba(0,0,0,.18);
-      border: 1px solid var(--stroke);
     }
-    .artwrap{
-      width:88px;height:88px;border-radius:18px;
+
+    @media (max-width: 520px){
+      .hero{grid-template-columns:1fr;}
+    }
+
+    .art{
+      border-radius: 18px;
       overflow:hidden;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.06);
-      flex:0 0 auto;
-      display:grid;place-items:center;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.35);
+      aspect-ratio:1/1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       position:relative;
     }
-    /* ทำให้ artwork.js ที่ inject <img> fit สวยๆ */
-    .artwrap img{width:100%;height:100%;object-fit:cover;display:block}
-    .artwrap::after{
+
+    .art::after{
       content:"";
-      position:absolute;inset:0;
-      background: radial-gradient(120px 120px at 30% 10%, rgba(255,255,255,.18), transparent 60%);
+      position:absolute;
+      inset:0;
+      background: radial-gradient(380px 260px at 30% 20%, rgba(227,30,36,.20), transparent 60%);
       pointer-events:none;
     }
 
-    .meta{flex:1; min-width: 0;}
-    .label{font-size:12px;color:var(--muted); margin-bottom:6px}
-    .track{
-      font-weight:700;
-      font-size:16px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      margin:0;
+    .art .fallback{
+      text-align:center;
+      padding:12px;
+      z-index:1;
     }
-    .next{
-      margin-top:8px;
-      font-size:13px;
-      color: var(--muted);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .controls{
+
+    .art .fallback b{display:block; font-family:"Montserrat";}
+
+    /* radio.co artwork script will inject content; keep it nicely contained */
+    .art img{width:100%; height:100%; object-fit:cover; display:block}
+
+    .now{
+      min-width:0;
       display:flex;
       flex-direction:column;
       gap:10px;
-      align-items:flex-end;
+    }
+
+    .label{
+      font-size:12px;
+      color: rgba(255,255,255,.65);
+      letter-spacing:.2px;
+    }
+
+    .song-line{
+      background: rgba(0,0,0,.28);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding:10px 12px;
+      min-height:46px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      overflow:hidden;
+    }
+
+    .song-line .icon{
+      width:34px; height:34px;
+      border-radius:12px;
+      background: rgba(227,30,36,.18);
+      border:1px solid rgba(227,30,36,.35);
+      display:grid;
+      place-items:center;
       flex:0 0 auto;
     }
-    .btn{
-      appearance:none;
-      border:1px solid rgba(255,255,255,.22);
-      background: rgba(255,255,255,.10);
-      color: var(--text);
-      border-radius: 16px;
-      padding: 12px 14px;
-      cursor:pointer;
+
+    .song-line .text{
+      min-width:0;
       display:flex;
-      align-items:center;
-      gap:10px;
+      flex-direction:column;
+      gap:2px;
+    }
+
+    .song-line .text strong{
+      font-size:14.5px;
       font-weight:700;
-      letter-spacing:.2px;
-      transition: transform .08s ease, background .2s ease, border-color .2s ease;
-      user-select:none;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-    .btn:hover{background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.30)}
-    .btn:active{transform: translateY(1px)}
-    .pill{
+
+    .song-line .text span{
       font-size:12px;
-      color: var(--muted);
-      padding: 8px 10px;
-      border:1px solid var(--stroke);
-      border-radius: 999px;
-      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.70);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-    }
-    @media (max-width: 560px){
-      .grid2{grid-template-columns:1fr}
-      .player{align-items:flex-start}
-      .controls{align-items:stretch}
-      .btn{justify-content:center}
-    }
-    .panel{
-      padding:14px;
-      border-radius: 18px;
-      background: rgba(0,0,0,.18);
-      border: 1px solid var(--stroke);
-    }
-    .panel h2{
-      margin:0 0 10px;
-      font-size:14px;
-      letter-spacing:.2px;
-    }
-    .hint{color:var(--muted); font-size:12px; margin:0}
-    .statusRow{
-      margin-top:10px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .small{font-size:12px; color: var(--muted)}
-    .rightCard{
-      padding:18px;
+
+    .player{
+      padding: 0 16px 16px;
       display:flex;
       flex-direction:column;
       gap:12px;
     }
-    .hero{
-      padding:16px;
-      border-radius: 18px;
-      border:1px solid var(--stroke);
-      background:
-        radial-gradient(420px 220px at 20% 10%, rgba(0,240,255,.20), transparent 60%),
-        radial-gradient(420px 260px at 90% 40%, rgba(140,80,255,.18), transparent 60%),
-        rgba(0,0,0,.18);
-    }
-    .heroTitle{margin:0; font-size:18px}
-    .heroDesc{margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.5}
-    .embedWrap{
-      border-radius: 18px;
-      overflow:hidden;
-      border:1px solid var(--stroke);
-      background: rgba(0,0,0,.18);
-      min-height: 220px;
-    }
-    iframe{width:100%; height:260px; border:0; display:block}
-    .footer{
-      margin-top:auto;
+
+    .controls{
       display:flex;
-      justify-content:space-between;
       align-items:center;
+      justify-content:space-between;
       gap:10px;
-      color: var(--muted);
-      font-size:12px;
-      padding:0 4px;
       flex-wrap:wrap;
     }
-    a{color: rgba(255,255,255,.82)}
+
+    .btn{
+      appearance:none;
+      border:0;
+      cursor:pointer;
+      padding:12px 14px;
+      border-radius: 999px;
+      background: var(--red);
+      color: var(--white);
+      font-weight:800;
+      font-family:"Montserrat", system-ui;
+      letter-spacing:.2px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      box-shadow: 0 14px 30px rgba(227,30,36,.20);
+      transition: transform .08s ease, filter .12s ease;
+      user-select:none;
+    }
+
+    .btn:active{transform: translateY(1px)}
+    .btn:hover{filter: brightness(1.05)}
+
+    .btn.secondary{
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:none;
+      font-weight:700;
+    }
+
+    .btn svg{width:18px; height:18px}
+
+    .slider{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.20);
+    }
+
+    input[type=range]{
+      accent-color: var(--red);
+      width:140px;
+    }
+
+    .tiny{
+      font-size:12px;
+      color: rgba(255,255,255,.70);
+    }
+
+    .aside{
+      padding: 16px;
+    }
+
+    .aside h3{
+      margin:0 0 8px;
+      font-family:"Montserrat", system-ui;
+      font-weight:900;
+      font-size:16px;
+    }
+
+    .req-box{
+      border:1px dashed rgba(255,255,255,.22);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(0,0,0,.25);
+    }
+
+    .req-box .cap{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 12px 10px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+
+    .req-box .cap .hint{font-size:12px; color:rgba(255,255,255,.70)}
+
+    /* Track Requests size 900*500 (responsive ด้วย) */
+    .req-frame{
+      width: 100%;
+      max-width: 900px;
+      aspect-ratio: 900 / 500;
+      margin: 12px auto 14px;
+      padding: 0 10px;
+    }
+
+    .req-frame > div{
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+
+    footer{
+      margin-top:auto;
+      border-top:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.35);
+    }
+
+    footer .inner{
+      max-width:1100px;
+      margin:0 auto;
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      color: rgba(255,255,255,.70);
+      font-size:12.5px;
+    }
+
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12px;
+      padding:2px 8px;
+      border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.80);
+    }
   </style>
 </head>
-
 <body>
-  <div class="app">
-    <!-- LEFT: Player -->
-    <section class="card">
-      <div class="header">
-        <div class="logo">
-          <img src="https://img2.pic.in.th/1000074512.png" alt="VIBE 24 โลโก้">
+  <div class="wrap">
+    <header>
+      <div class="topbar">
+        <div class="brand" aria-label="VIBE 24">
+          <img src="https://img2.pic.in.th/1000074512.png" alt="VIBE 24 Logo" />
+          <div class="name">
+            <strong>VIBE 24</strong>
+            <span>คลื่นเพลงฮิต...ต่อเนื่อง 24 ชั่วโมง</span>
+          </div>
         </div>
-        <div class="brand">
-          <h1>VIBE 24</h1>
-          <p>ฟังสด • เพลงล่าสุด • เพลงถัดไป</p>
+        <div class="pill" role="status" aria-live="polite">
+          <span class="live-dot" aria-hidden="true"></span>
+          <span class="txt">LIVE • On Air</span>
         </div>
       </div>
+    </header>
 
-      <div class="main">
-        <div class="player">
-          <div class="artwrap" id="artworkBox">
-            <!-- (1) Artwork จาก script ที่คุณให้มา -->
+    <main>
+      <!-- LEFT: Now Playing + Player -->
+      <section class="card" aria-label="ฟังสด VIBE 24">
+        <div class="card-head">
+          <h2>ฟังสดตอนนี้</h2>
+          <div class="muted" style="margin-top:6px; font-size:13px;">กดเล่น แล้วปล่อยให้ VIBE ดูแลฟีลคุณ 🎧</div>
+        </div>
+
+        <div class="hero">
+          <div class="art" aria-label="อาร์ตเวิร์กเพลง">
+            <!-- Artwork embed (radio.co) -->
+            <div class="fallback">
+              <b>Artwork</b>
+              <div class="muted" style="font-size:12px;">กำลังโหลดภาพ…</div>
+            </div>
             <script src="https://embed.radio.co/embed/sbf4f79825/artwork.js"></script>
           </div>
 
-          <div class="meta">
-            <div class="label">กำลังเล่นอยู่</div>
+          <div class="now">
+            <div>
+              <div class="label">เพลงที่กำลังเล่น</div>
+              <div class="song-line">
+                <div class="icon" aria-hidden="true">
+                  <!-- play icon -->
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 8.5V15.5L16 12L10 8.5Z" fill="#E31E24"/><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/></svg>
+                </div>
+                <div class="text" style="width:100%">
+                  <strong id="nowText">กำลังโหลดชื่อเพลง…</strong>
+                  <span class="muted">Now Playing</span>
+                </div>
+              </div>
+            </div>
 
-            <!-- (2) Current song title จาก script ที่คุณให้มา -->
-            <p class="track" id="currentSong">
-              <span id="songScriptMount">
-                <script src="https://embed.radio.co/embed/sbf4f79825/song.js"></script>
-              </span>
-            </p>
-
-            <div class="next" id="nextSong">
-              <span class="small">เพลงถัดไป: </span>
-              <span id="nextScriptMount">
-                <script src="https://embed.radio.co/embed/sbf4f79825/next.js"></script>
-              </span>
+            <div>
+              <div class="label">เพลงถัดไป</div>
+              <div class="song-line">
+                <div class="icon" aria-hidden="true">
+                  <!-- next icon -->
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 7V17" stroke="rgba(255,255,255,.45)" stroke-width="1.7" stroke-linecap="round"/><path d="M10 8.5V15.5L16 12L10 8.5Z" fill="#E31E24"/></svg>
+                </div>
+                <div class="text" style="width:100%">
+                  <strong id="nextText">กำลังโหลดเพลงถัดไป…</strong>
+                  <span class="muted">Up Next</span>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+
+        <div class="player">
+          <audio id="radio" preload="none" crossorigin="anonymous">
+            <source src="https://streaming.radio.co/sbf4f79825/listen" type="audio/mpeg" />
+          </audio>
 
           <div class="controls">
-            <button class="btn" id="playBtn" type="button" aria-label="เล่น/หยุด">
-              <span id="btnIcon">▶</span>
-              <span id="btnText">เล่น</span>
+            <button class="btn" id="playBtn" type="button">
+              <span id="playIcon" aria-hidden="true">▶</span>
+              <span id="playLabel">เล่น</span>
             </button>
-            <div class="pill" id="livePill">สถานะ: กำลังเชื่อมต่อ…</div>
+
+            <div class="slider" aria-label="ระดับเสียง">
+              <span class="tiny">🔊</span>
+              <input id="vol" type="range" min="0" max="1" step="0.01" value="0.85" />
+              <span class="tiny" id="volText">85%</span>
+            </div>
+
+            <a class="btn secondary" href="https://streaming.radio.co/sbf4f79825/listen" target="_blank" rel="noreferrer">
+              เปิดสตรีม
+            </a>
+          </div>
+
+          <div class="tiny" id="status">พร้อมเล่น</div>
+        </div>
+
+        <!-- Song + Next scripts (radio.co) -->
+        <script src="https://embed.radio.co/embed/sbf4f79825/song.js"></script>
+        <script src="https://embed.radio.co/embed/sbf4f79825/next.js"></script>
+      </section>
+
+      <!-- RIGHT: Requests + Info -->
+      <aside class="card aside" aria-label="ขอเพลง (Track Requests)">
+        <h3>Track Requests</h3>
+        <div class="muted" style="font-size:13px; margin-bottom:12px;">
+          อยากฟังเพลงไหน—ส่งคำขอได้เลย 👇
+        </div>
+
+        <div class="req-box">
+          <div class="cap">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span class="live-dot" aria-hidden="true" style="width:8px;height:8px;animation:none;box-shadow:none"></span>
+              <div style="font-weight:700;">Request a Track</div>
+            </div>
+            <div class="hint">ขนาด 900×500 (Responsive)</div>
+          </div>
+
+          <div class="req-frame">
+            <div aria-label="Request Widget">
+              <script src="https://embed.radio.co/request/w75f0bc0.js"></script>
+            </div>
           </div>
         </div>
 
-        <div class="grid2">
-          <div class="panel">
-            <h2>วิธีใช้งาน</h2>
-            <p class="hint">
-              กด “เล่น” เพื่อฟังสด (เว็บจะพยายามดึงลิงก์สตรีมอัตโนมัติจาก Radio.co)
-              ถ้าเครื่อง/เบราว์เซอร์บล็อกการเล่นอัตโนมัติ ให้กดปุ่มอีกครั้ง
-            </p>
-          </div>
-
-          <div class="panel">
-            <h2>หมายเหตุ</h2>
-            <p class="hint">
-              ชื่อเพลง/ปกเพลง/เพลงถัดไป ใช้สคริปต์ที่คุณให้มาอยู่แล้ว
-              ส่วนปุ่มเล่นใช้ระบบ audio ของเว็บ (มี fallback เป็น player แบบ iframe)
-            </p>
-          </div>
+        <div style="margin-top:14px" class="tiny">
+          ทิป: ถ้า iPhone/มือถือบางรุ่นกดเล่นไม่ได้ ให้กดปุ่ม <span class="kbd">เล่น</span> อีกครั้ง (บางเบราว์เซอร์ต้องให้ผู้ใช้กดเอง 1 ครั้งก่อน)
         </div>
+      </aside>
+    </main>
 
-        <div class="panel">
-          <h2>รายละเอียดการเชื่อมต่อ</h2>
-          <div class="statusRow">
-            <div class="small" id="streamInfo">Stream: ยังไม่ได้ดึง</div>
-            <div class="small" id="lastUpdate">อัปเดตล่าสุด: -</div>
-          </div>
-        </div>
+    <footer>
+      <div class="inner">
+        <div>© <span id="y"></span> VIBE 24 • Online Radio</div>
+        <div class="muted">Made with ❤️ • สี/ฟอนต์ตาม Corporate Identity</div>
       </div>
-    </section>
-
-    <!-- RIGHT: Info + Fallback Embed -->
-    <aside class="card rightCard">
-      <div class="hero">
-        <p class="heroTitle">🎧 Welcome to VIBE 24</p>
-        <p class="heroDesc">
-          หน้าเว็บนี้เหมาะสำหรับวางบนโฮสต์ฟรี/โดเมนของคุณได้เลย (ไฟล์เดียวจบ)
-          ถ้าปุ่มเล่นใช้ไม่ได้ในบางเครื่อง จะมีตัวเล่นสำรองด้านล่างให้ฟังได้แน่นอน
-        </p>
-      </div>
-
-      <div class="embedWrap" id="fallbackWrap" style="display:none">
-        <!-- Fallback player (แสดงเมื่อดึงสตรีมไม่ได้) -->
-        <iframe
-          title="VIBE 24 Player"
-          src="https://embed.radio.co/player/sbf4f79825.html">
-        </iframe>
-      </div>
-
-      <div class="footer">
-        <span>© <span id="year"></span> VIBE 24</span>
-        <span>Made with ❤️</span>
-      </div>
-    </aside>
+    </footer>
   </div>
 
-  <audio id="audio" preload="none" crossorigin="anonymous"></audio>
-
   <script>
-    const STATION_ID = "sbf4f79825";
-    const statusUrl = `https://public.radio.co/stations/${STATION_ID}/status`;
+    // ===== Simple player controls =====
+    const radio = document.getElementById('radio');
+    const playBtn = document.getElementById('playBtn');
+    const playIcon = document.getElementById('playIcon');
+    const playLabel = document.getElementById('playLabel');
+    const statusEl = document.getElementById('status');
+    const vol = document.getElementById('vol');
+    const volText = document.getElementById('volText');
 
-    const audio = document.getElementById("audio");
-    const playBtn = document.getElementById("playBtn");
-    const btnIcon = document.getElementById("btnIcon");
-    const btnText = document.getElementById("btnText");
-    const livePill = document.getElementById("livePill");
-    const streamInfo = document.getElementById("streamInfo");
-    const lastUpdate = document.getElementById("lastUpdate");
-    const fallbackWrap = document.getElementById("fallbackWrap");
+    // init
+    document.getElementById('y').textContent = new Date().getFullYear();
+    radio.volume = Number(vol.value);
 
-    document.getElementById("year").textContent = new Date().getFullYear();
+    const setStatus = (t) => (statusEl.textContent = t);
 
-    let streamUrl = null;
-    let isReady = false;
+    const setPlayingUI = (isPlaying) => {
+      playIcon.textContent = isPlaying ? '⏸' : '▶';
+      playLabel.textContent = isPlaying ? 'หยุด' : 'เล่น';
+    };
 
-    function setPill(text){ livePill.textContent = "สถานะ: " + text; }
-    function setBtn(playing){
-      btnIcon.textContent = playing ? "⏸" : "▶";
-      btnText.textContent = playing ? "หยุด" : "เล่น";
-    }
-
-    async function fetchStatus(){
-      // ดึงข้อมูลสตรีมจาก Radio.co
-      const res = await fetch(statusUrl, { cache: "no-store" });
-      if(!res.ok) throw new Error("status not ok");
-      const data = await res.json();
-
-      // หลายเจ้าจะส่ง stream_host หรือ streaming_host (เผื่อไว้)
-      const host = data.stream_host || data.streaming_host || data.streamHost;
-      if(!host) throw new Error("no stream_host");
-
-      streamUrl = `https://${host}/${STATION_ID}/listen`;
-      streamInfo.textContent = "Stream: " + streamUrl;
-      lastUpdate.textContent = "อัปเดตล่าสุด: " + new Date().toLocaleString("th-TH");
-      isReady = true;
-      setPill("พร้อมเล่น");
-      return data;
-    }
-
-    async function ensureStream(){
-      if(isReady && streamUrl) return;
-      setPill("กำลังดึงลิงก์สตรีม…");
-      try{
-        await fetchStatus();
-        // ตั้ง src ให้ audio
-        audio.src = streamUrl;
-      }catch(err){
-        // ถ้าดึงไม่ได้ ให้เปิด fallback iframe
-        console.warn(err);
-        setPill("ใช้โหมดสำรอง (Player)");
-        fallbackWrap.style.display = "block";
-        // ยังอนุญาตให้ลองเล่นผ่าน audio ได้ (บางที fetch โดนบล็อก แต่ stream เล่นได้)
+    playBtn.addEventListener('click', async () => {
+      try {
+        if (radio.paused) {
+          setStatus('กำลังเชื่อมต่อสตรีม…');
+          await radio.play();
+          setPlayingUI(true);
+          setStatus('กำลังเล่น (LIVE)');
+        } else {
+          radio.pause();
+          setPlayingUI(false);
+          setStatus('หยุดเล่นแล้ว');
+        }
+      } catch (err) {
+        setPlayingUI(false);
+        setStatus('เล่นไม่ได้ในตอนนี้: ลองกด “เปิดสตรีม” หรือรีเฟรชหน้า');
+        console.error(err);
       }
-    }
-
-    async function togglePlay(){
-      const isPlaying = !audio.paused && !audio.ended;
-
-      if(isPlaying){
-        audio.pause();
-        setBtn(false);
-        setPill("หยุดแล้ว");
-        return;
-      }
-
-      await ensureStream();
-
-      try{
-        if(!audio.src && streamUrl) audio.src = streamUrl;
-        await audio.play();
-        setBtn(true);
-        setPill("กำลังเล่นสด");
-      }catch(err){
-        // บางเบราว์เซอร์ต้องให้ผู้ใช้กดปุ่ม (เรากดแล้ว) แต่ถ้ายัง fail ก็ให้ใช้ fallback
-        console.warn(err);
-        setBtn(false);
-        setPill("เล่นไม่ได้ในโหมดนี้—ลองใช้ Player สำรอง");
-        fallbackWrap.style.display = "block";
-      }
-    }
-
-    playBtn.addEventListener("click", togglePlay);
-
-    audio.addEventListener("playing", () => setBtn(true));
-    audio.addEventListener("pause", () => setBtn(false));
-    audio.addEventListener("error", () => {
-      setBtn(false);
-      setPill("เกิดข้อผิดพลาดของสตรีม—ใช้ Player สำรอง");
-      fallbackWrap.style.display = "block";
     });
 
-    // อัปเดตสถานะสตรีมเป็นระยะ (ไม่ไปยุ่งกับ song.js ของคุณ)
-    (async function boot(){
-      setBtn(false);
-      await ensureStream();
-      // รีเฟรช stream_host เผื่อมีการเปลี่ยน
-      setInterval(() => {
-        fetchStatus().catch(()=>{});
-      }, 60_000);
-    })();
+    vol.addEventListener('input', () => {
+      radio.volume = Number(vol.value);
+      volText.textContent = `${Math.round(radio.volume * 100)}%`;
+    });
+
+    radio.addEventListener('waiting', () => setStatus('กำลังบัฟเฟอร์…'));
+    radio.addEventListener('playing', () => setStatus('กำลังเล่น (LIVE)'));
+    radio.addEventListener('pause', () => setStatus('หยุดเล่นแล้ว'));
+    radio.addEventListener('error', () => setStatus('สตรีมมีปัญหา: ลองกด “เปิดสตรีม”'));
+
+    // ===== Hook radio.co embed outputs to our UI =====
+    // radio.co scripts typically inject into elements with IDs like:
+    //   #rc-nowplaying, #rc-upnext, etc. But to be safe, we also observe DOM changes.
+    // We'll pick up the text that gets injected anywhere and mirror it into our labels.
+
+    const nowText = document.getElementById('nowText');
+    const nextText = document.getElementById('nextText');
+
+    // helper: try common selectors radio.co uses
+    const pullRadioCoText = () => {
+      const candidatesNow = [
+        document.querySelector('#rc-nowplaying'),
+        document.querySelector('.rc-nowplaying'),
+        document.querySelector('[data-rc-nowplaying]')
+      ].filter(Boolean);
+
+      const candidatesNext = [
+        document.querySelector('#rc-upnext'),
+        document.querySelector('.rc-upnext'),
+        document.querySelector('[data-rc-upnext]')
+      ].filter(Boolean);
+
+      if (candidatesNow.length) {
+        const t = candidatesNow[0].textContent?.trim();
+        if (t) nowText.textContent = t;
+      }
+      if (candidatesNext.length) {
+        const t2 = candidatesNext[0].textContent?.trim();
+        if (t2) nextText.textContent = t2;
+      }
+    };
+
+    // Observe mutations to catch injected content
+    const observer = new MutationObserver(() => pullRadioCoText());
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    // Run once after load
+    window.addEventListener('load', () => {
+      pullRadioCoText();
+      // Fallback message if scripts don’t map into our picks
+      setTimeout(() => {
+        if (nowText.textContent.includes('กำลังโหลด')) nowText.textContent = 'กำลังออนแอร์…';
+        if (nextText.textContent.includes('กำลังโหลด')) nextText.textContent = 'รอข้อมูลเพลงถัดไป…';
+      }, 1800);
+    });
   </script>
 </body>
 </html>
