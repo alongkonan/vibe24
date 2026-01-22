@@ -1,390 +1,441 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIBE 24 - คลื่นเพลงฮิต...ต่อเนื่อง 24 ชั่วโมง</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b0f1a" />
+  <title>VIBE 24 • Online Radio</title>
+  <style>
+    :root{
+      --bg:#060814;
+      --card: rgba(255,255,255,.08);
+      --card2: rgba(255,255,255,.12);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --stroke: rgba(255,255,255,.16);
+      --shadow: 0 24px 80px rgba(0,0,0,.55);
+      --radius: 22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Thai", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 10% 10%, rgba(140, 80, 255,.35), transparent 60%),
+        radial-gradient(1000px 700px at 90% 20%, rgba(0, 240, 255,.22), transparent 55%),
+        radial-gradient(900px 700px at 50% 100%, rgba(255, 0, 160,.18), transparent 55%),
+        var(--bg);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px 16px;
+    }
+    .app{
+      width:min(980px, 100%);
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:18px;
+    }
+    @media (max-width: 860px){
+      .app{grid-template-columns:1fr}
+    }
+    .card{
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      border:1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .header{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding:18px 18px 12px;
+    }
+    .logo{
+      width:56px;height:56px;border-radius:16px;
+      background: rgba(255,255,255,.10);
+      border:1px solid var(--stroke);
+      display:grid;place-items:center;
+      overflow:hidden;
+      flex:0 0 auto;
+    }
+    .logo img{width:100%;height:100%;object-fit:cover}
+    .brand h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:.3px;
+      line-height:1.2;
+    }
+    .brand p{
+      margin:6px 0 0;
+      color: var(--muted);
+      font-size:13px;
+    }
+    .main{
+      padding: 0 18px 18px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+    }
+    .player{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      padding:14px;
+      border-radius: 18px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid var(--stroke);
+    }
+    .artwrap{
+      width:88px;height:88px;border-radius:18px;
+      overflow:hidden;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.06);
+      flex:0 0 auto;
+      display:grid;place-items:center;
+      position:relative;
+    }
+    /* ทำให้ artwork.js ที่ inject <img> fit สวยๆ */
+    .artwrap img{width:100%;height:100%;object-fit:cover;display:block}
+    .artwrap::after{
+      content:"";
+      position:absolute;inset:0;
+      background: radial-gradient(120px 120px at 30% 10%, rgba(255,255,255,.18), transparent 60%);
+      pointer-events:none;
+    }
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        vibeRed: '#E31E24',
-                        vibeBlack: '#000000',
-                        vibeDark: '#111111',
-                        vibeGray: '#333333',
-                    },
-                    fontFamily: {
-                        sans: ['Prompt', 'sans-serif'],
-                        montserrat: ['Montserrat', 'sans-serif'],
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'sound-wave': 'wave 1.2s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        wave: {
-                            '0%, 100%': { height: '10%' },
-                            '50%': { height: '60%' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            background-color: #000000;
-            color: #ffffff;
-            font-family: 'Prompt', sans-serif;
-            overflow-x: hidden;
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #111; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #333; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #E31E24; 
-        }
-
-        .text-shadow-glow {
-            text-shadow: 0 0 20px rgba(227, 30, 36, 0.5);
-        }
-
-        .visualizer-bar {
-            width: 6px;
-            background: #E31E24;
-            border-radius: 999px;
-            animation: wave 1s ease-in-out infinite;
-        }
-        
-        .visualizer-bar:nth-child(odd) {
-            animation-duration: 0.8s;
-            background: #fff;
-        }
-        
-        .visualizer-bar:nth-child(2n) { animation-duration: 1.1s; }
-        .visualizer-bar:nth-child(3n) { animation-duration: 1.3s; }
-        .visualizer-bar:nth-child(4n) { animation-duration: 0.9s; }
-        
-        .paused .visualizer-bar {
-            animation-play-state: paused;
-            height: 5px !important;
-            transition: height 0.3s ease;
-        }
-
-        /* Glassmorphism for player */
-        .glass-panel {
-            background: rgba(20, 20, 20, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Request Widget Styling Override if possible, otherwise wrapper */
-        .request-wrapper iframe {
-            width: 100%;
-            border: none;
-        }
-    </style>
+    .meta{flex:1; min-width: 0;}
+    .label{font-size:12px;color:var(--muted); margin-bottom:6px}
+    .track{
+      font-weight:700;
+      font-size:16px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      margin:0;
+    }
+    .next{
+      margin-top:8px;
+      font-size:13px;
+      color: var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .controls{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:flex-end;
+      flex:0 0 auto;
+    }
+    .btn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.10);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 12px 14px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:700;
+      letter-spacing:.2px;
+      transition: transform .08s ease, background .2s ease, border-color .2s ease;
+      user-select:none;
+    }
+    .btn:hover{background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.30)}
+    .btn:active{transform: translateY(1px)}
+    .pill{
+      font-size:12px;
+      color: var(--muted);
+      padding: 8px 10px;
+      border:1px solid var(--stroke);
+      border-radius: 999px;
+      background: rgba(0,0,0,.18);
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 560px){
+      .grid2{grid-template-columns:1fr}
+      .player{align-items:flex-start}
+      .controls{align-items:stretch}
+      .btn{justify-content:center}
+    }
+    .panel{
+      padding:14px;
+      border-radius: 18px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid var(--stroke);
+    }
+    .panel h2{
+      margin:0 0 10px;
+      font-size:14px;
+      letter-spacing:.2px;
+    }
+    .hint{color:var(--muted); font-size:12px; margin:0}
+    .statusRow{
+      margin-top:10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .small{font-size:12px; color: var(--muted)}
+    .rightCard{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .hero{
+      padding:16px;
+      border-radius: 18px;
+      border:1px solid var(--stroke);
+      background:
+        radial-gradient(420px 220px at 20% 10%, rgba(0,240,255,.20), transparent 60%),
+        radial-gradient(420px 260px at 90% 40%, rgba(140,80,255,.18), transparent 60%),
+        rgba(0,0,0,.18);
+    }
+    .heroTitle{margin:0; font-size:18px}
+    .heroDesc{margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.5}
+    .embedWrap{
+      border-radius: 18px;
+      overflow:hidden;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.18);
+      min-height: 220px;
+    }
+    iframe{width:100%; height:260px; border:0; display:block}
+    .footer{
+      margin-top:auto;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      color: var(--muted);
+      font-size:12px;
+      padding:0 4px;
+      flex-wrap:wrap;
+    }
+    a{color: rgba(255,255,255,.82)}
+  </style>
 </head>
-<body class="flex flex-col min-h-screen bg-vibeBlack bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')]">
 
-    <!-- Navbar -->
-    <nav class="fixed w-full z-50 transition-all duration-300 bg-gradient-to-b from-black/90 to-transparent py-4 px-6 md:px-12 flex justify-between items-center">
-        <div class="flex items-center gap-4">
-            <!-- Logo -->
-            <img src="https://img2.pic.in.th/1000074512.png" alt="VIBE 24 Logo" class="h-12 md:h-16 object-contain drop-shadow-lg">
+<body>
+  <div class="app">
+    <!-- LEFT: Player -->
+    <section class="card">
+      <div class="header">
+        <div class="logo">
+          <img src="https://img2.pic.in.th/1000074512.png" alt="VIBE 24 โลโก้">
         </div>
-        
-        <div class="hidden md:flex items-center gap-8">
-            <a href="#" class="text-white hover:text-vibeRed transition-colors font-montserrat font-bold uppercase text-sm tracking-widest">Home</a>
-            <a href="#schedule" class="text-gray-400 hover:text-vibeRed transition-colors font-montserrat font-bold uppercase text-sm tracking-widest">Schedule</a>
-            <a href="#request" class="text-gray-400 hover:text-vibeRed transition-colors font-montserrat font-bold uppercase text-sm tracking-widest">Requests</a>
-            <div class="flex items-center gap-2 px-3 py-1 bg-vibeRed/20 border border-vibeRed/50 rounded-full">
-                <div class="w-2 h-2 bg-vibeRed rounded-full animate-pulse"></div>
-                <span class="text-vibeRed text-xs font-bold uppercase tracking-wider">Live On Air</span>
+        <div class="brand">
+          <h1>VIBE 24</h1>
+          <p>ฟังสด • เพลงล่าสุด • เพลงถัดไป</p>
+        </div>
+      </div>
+
+      <div class="main">
+        <div class="player">
+          <div class="artwrap" id="artworkBox">
+            <!-- (1) Artwork จาก script ที่คุณให้มา -->
+            <script src="https://embed.radio.co/embed/sbf4f79825/artwork.js"></script>
+          </div>
+
+          <div class="meta">
+            <div class="label">กำลังเล่นอยู่</div>
+
+            <!-- (2) Current song title จาก script ที่คุณให้มา -->
+            <p class="track" id="currentSong">
+              <span id="songScriptMount">
+                <script src="https://embed.radio.co/embed/sbf4f79825/song.js"></script>
+              </span>
+            </p>
+
+            <div class="next" id="nextSong">
+              <span class="small">เพลงถัดไป: </span>
+              <span id="nextScriptMount">
+                <script src="https://embed.radio.co/embed/sbf4f79825/next.js"></script>
+              </span>
             </div>
+          </div>
+
+          <div class="controls">
+            <button class="btn" id="playBtn" type="button" aria-label="เล่น/หยุด">
+              <span id="btnIcon">▶</span>
+              <span id="btnText">เล่น</span>
+            </button>
+            <div class="pill" id="livePill">สถานะ: กำลังเชื่อมต่อ…</div>
+          </div>
         </div>
 
-        <!-- Mobile Menu Button -->
-        <button class="md:hidden text-white text-2xl">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-    </nav>
+        <div class="grid2">
+          <div class="panel">
+            <h2>วิธีใช้งาน</h2>
+            <p class="hint">
+              กด “เล่น” เพื่อฟังสด (เว็บจะพยายามดึงลิงก์สตรีมอัตโนมัติจาก Radio.co)
+              ถ้าเครื่อง/เบราว์เซอร์บล็อกการเล่นอัตโนมัติ ให้กดปุ่มอีกครั้ง
+            </p>
+          </div>
 
-    <!-- Hero / Player Section -->
-    <main class="flex-grow flex items-center justify-center relative pt-20 pb-10 px-4">
-        <!-- Background Glow -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-vibeRed/10 rounded-full blur-[100px] -z-10"></div>
-
-        <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            
-            <!-- Left: Artwork & Visuals -->
-            <div class="flex flex-col items-center md:items-end order-2 md:order-1 relative">
-                <div class="relative group w-64 h-64 md:w-96 md:h-96">
-                    <!-- Rotating Ring -->
-                    <div class="absolute inset-0 border-2 border-dashed border-vibeRed/30 rounded-full animate-[spin_10s_linear_infinite]"></div>
-                    <div class="absolute inset-4 border border-white/10 rounded-full"></div>
-                    
-                    <!-- Artwork Container -->
-                    <div class="absolute inset-6 rounded-full overflow-hidden shadow-2xl shadow-vibeRed/20 bg-vibeDark flex items-center justify-center">
-                        <img id="track-artwork" src="https://img2.pic.in.th/1000074512.png" alt="Album Art" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                        <!-- Placeholder if no image -->
-                        <div id="artwork-placeholder" class="absolute inset-0 flex items-center justify-center bg-vibeDark hidden">
-                            <i class="fa-solid fa-music text-4xl text-vibeGray"></i>
-                        </div>
-                    </div>
-
-                    <!-- Play Button Overlay (Center) -->
-                    <button id="main-play-btn" onclick="togglePlay()" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-vibeRed hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg shadow-red-600/50 transition-all hover:scale-110 z-20 group">
-                        <i id="play-icon" class="fa-solid fa-play text-2xl ml-1"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Right: Info & Controls -->
-            <div class="flex flex-col items-center md:items-start text-center md:text-left order-1 md:order-2 space-y-6">
-                
-                <div class="space-y-1">
-                    <h2 class="text-vibeRed font-montserrat font-black text-xl tracking-widest uppercase">Now Playing</h2>
-                    <h1 id="track-title" class="text-3xl md:text-5xl font-bold text-white leading-tight text-shadow-glow">
-                        Loading...
-                    </h1>
-                    <p id="track-artist" class="text-lg text-gray-400 font-light">VIBE 24 Station</p>
-                </div>
-
-                <!-- Live Visualizer -->
-                <div id="visualizer" class="h-12 flex items-end gap-1 paused opacity-50 transition-opacity duration-300">
-                    <div class="visualizer-bar h-8"></div>
-                    <div class="visualizer-bar h-12"></div>
-                    <div class="visualizer-bar h-6"></div>
-                    <div class="visualizer-bar h-10"></div>
-                    <div class="visualizer-bar h-14"></div>
-                    <div class="visualizer-bar h-8"></div>
-                    <div class="visualizer-bar h-4"></div>
-                    <div class="visualizer-bar h-10"></div>
-                </div>
-
-                <!-- Next Track & Controls -->
-                <div class="w-full max-w-md bg-white/5 rounded-xl p-4 backdrop-blur-sm border border-white/10">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="text-xs text-gray-500 uppercase font-bold tracking-wider">Next Up</div>
-                        <div class="text-xs text-vibeRed uppercase font-bold tracking-wider"><i class="fa-solid fa-clock mr-1"></i> Coming Soon</div>
-                    </div>
-                    <!-- Legacy Script Wrapper for Next Song (Hidden if API works, or used as fallback) -->
-                    <div class="text-sm text-gray-300 font-medium truncate">
-                        <span id="next-track-display">Loading next track info...</span>
-                        
-                        <!-- Hidden container for the provided script to run, we extract text if possible or just let it sit -->
-                        <div id="script-next-container" class="hidden">
-                           <!-- Script injected dynamically on load -->
-                        </div>
-                    </div>
-
-                    <!-- Volume Control -->
-                    <div class="mt-4 flex items-center gap-3">
-                        <button onclick="toggleMute()" class="text-gray-400 hover:text-white"><i id="vol-icon" class="fa-solid fa-volume-high"></i></button>
-                        <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.8" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-vibeRed">
-                    </div>
-                </div>
-
-            </div>
+          <div class="panel">
+            <h2>หมายเหตุ</h2>
+            <p class="hint">
+              ชื่อเพลง/ปกเพลง/เพลงถัดไป ใช้สคริปต์ที่คุณให้มาอยู่แล้ว
+              ส่วนปุ่มเล่นใช้ระบบ audio ของเว็บ (มี fallback เป็น player แบบ iframe)
+            </p>
+          </div>
         </div>
-    </main>
 
-    <!-- Request Section -->
-    <section id="request" class="py-16 bg-gradient-to-t from-vibeDark to-black border-t border-white/5">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-montserrat font-bold text-white mb-2">REQUEST A <span class="text-vibeRed">TRACK</span></h2>
-            <p class="text-gray-400 mb-8">อยากฟังเพลงอะไร? ขอเข้ามาได้เลยตลอด 24 ชั่วโมง</p>
-
-            <div class="max-w-4xl mx-auto bg-white rounded-lg overflow-hidden shadow-2xl">
-                 <!-- The Request Script -->
-                 <div class="w-full h-[600px] md:h-[500px]">
-                    <!-- Using iframe to contain the script safely -->
-                    <iframe src="about:blank" id="request-iframe" class="w-full h-full border-0"></iframe>
-                 </div>
-            </div>
+        <div class="panel">
+          <h2>รายละเอียดการเชื่อมต่อ</h2>
+          <div class="statusRow">
+            <div class="small" id="streamInfo">Stream: ยังไม่ได้ดึง</div>
+            <div class="small" id="lastUpdate">อัปเดตล่าสุด: -</div>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-vibeDark border-t border-vibeRed py-8">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-2">
-                <img src="https://img2.pic.in.th/1000074512.png" alt="Logo" class="h-8">
-                <span class="text-white font-montserrat font-bold text-lg">VIBE<span class="text-vibeRed">24</span></span>
-            </div>
-            <p class="text-gray-500 text-sm">© 2024 VIBE 24. All Rights Reserved. คลื่นเพลงฮิต...ต่อเนื่อง 24 ชั่วโมง</p>
-            <div class="flex gap-4">
-                <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-vibeRed transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-vibeRed transition-colors"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-vibeRed transition-colors"><i class="fa-brands fa-tiktok"></i></a>
-            </div>
-        </div>
-    </footer>
+    <!-- RIGHT: Info + Fallback Embed -->
+    <aside class="card rightCard">
+      <div class="hero">
+        <p class="heroTitle">🎧 Welcome to VIBE 24</p>
+        <p class="heroDesc">
+          หน้าเว็บนี้เหมาะสำหรับวางบนโฮสต์ฟรี/โดเมนของคุณได้เลย (ไฟล์เดียวจบ)
+          ถ้าปุ่มเล่นใช้ไม่ได้ในบางเครื่อง จะมีตัวเล่นสำรองด้านล่างให้ฟังได้แน่นอน
+        </p>
+      </div>
 
-    <!-- Audio Element -->
-    <audio id="audio-player" preload="none">
-        <source src="https://streaming.radio.co/sbf4f79825/listen" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+      <div class="embedWrap" id="fallbackWrap" style="display:none">
+        <!-- Fallback player (แสดงเมื่อดึงสตรีมไม่ได้) -->
+        <iframe
+          title="VIBE 24 Player"
+          src="https://embed.radio.co/player/sbf4f79825.html">
+        </iframe>
+      </div>
 
-    <!-- Logic Script -->
-    <script>
-        const stationId = 'sbf4f79825';
-        const audio = document.getElementById('audio-player');
-        const playBtn = document.getElementById('main-play-btn');
-        const playIcon = document.getElementById('play-icon');
-        const visualizer = document.getElementById('visualizer');
-        const volSlider = document.getElementById('volume-slider');
-        
-        let isPlaying = false;
+      <div class="footer">
+        <span>© <span id="year"></span> VIBE 24</span>
+        <span>Made with ❤️</span>
+      </div>
+    </aside>
+  </div>
 
-        // Player Logic
-        function togglePlay() {
-            if (isPlaying) {
-                audio.pause();
-                playIcon.classList.remove('fa-pause');
-                playIcon.classList.add('fa-play');
-                visualizer.classList.add('paused');
-                visualizer.classList.remove('opacity-100');
-                visualizer.classList.add('opacity-50');
-            } else {
-                audio.play();
-                playIcon.classList.remove('fa-play');
-                playIcon.classList.add('fa-pause');
-                visualizer.classList.remove('paused');
-                visualizer.classList.remove('opacity-50');
-                visualizer.classList.add('opacity-100');
-            }
-            isPlaying = !isPlaying;
-        }
+  <audio id="audio" preload="none" crossorigin="anonymous"></audio>
 
-        // Volume Logic
-        volSlider.addEventListener('input', (e) => {
-            audio.volume = e.target.value;
-            updateVolIcon(e.target.value);
-        });
+  <script>
+    const STATION_ID = "sbf4f79825";
+    const statusUrl = `https://public.radio.co/stations/${STATION_ID}/status`;
 
-        function updateVolIcon(val) {
-            const icon = document.getElementById('vol-icon');
-            icon.className = 'fa-solid';
-            if(val == 0) icon.classList.add('fa-volume-xmark');
-            else if(val < 0.5) icon.classList.add('fa-volume-low');
-            else icon.classList.add('fa-volume-high');
-        }
+    const audio = document.getElementById("audio");
+    const playBtn = document.getElementById("playBtn");
+    const btnIcon = document.getElementById("btnIcon");
+    const btnText = document.getElementById("btnText");
+    const livePill = document.getElementById("livePill");
+    const streamInfo = document.getElementById("streamInfo");
+    const lastUpdate = document.getElementById("lastUpdate");
+    const fallbackWrap = document.getElementById("fallbackWrap");
 
-        function toggleMute() {
-            if(audio.volume > 0) {
-                audio.dataset.prevVol = audio.volume;
-                audio.volume = 0;
-                volSlider.value = 0;
-            } else {
-                audio.volume = audio.dataset.prevVol || 0.8;
-                volSlider.value = audio.volume;
-            }
-            updateVolIcon(audio.volume);
-        }
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-        // --- MODERN DATA FETCHING ---
-        // Instead of using document.write which breaks dynamic pages, we fetch the data from Radio.co API
-        
-        async function updateTrackInfo() {
-            try {
-                // Fetch public status
-                const response = await fetch(`https://public.radio.co/stations/${stationId}/status`);
-                const data = await response.json();
-                
-                // Update Title
-                const titleElement = document.getElementById('track-title');
-                const artistElement = document.getElementById('track-artist');
-                
-                const fullTitle = data.current_track.title; // Usually "Artist - Song"
-                const parts = fullTitle.split(' - ');
-                
-                if (parts.length > 1) {
-                    artistElement.innerText = parts[0];
-                    titleElement.innerText = parts.slice(1).join(' - ');
-                } else {
-                    artistElement.innerText = 'VIBE 24';
-                    titleElement.innerText = fullTitle;
-                }
+    let streamUrl = null;
+    let isReady = false;
 
-                // Update Artwork
-                const artElement = document.getElementById('track-artwork');
-                const newArt = data.current_track.artwork_url;
-                if(newArt && newArt !== artElement.src) {
-                    artElement.src = newArt;
-                }
-                // Fallback to default logo if artwork is the default radio.co placeholder or null
-                if (!newArt || newArt.includes('default_artwork')) {
-                   artElement.src = "https://img2.pic.in.th/1000074512.png";
-                }
+    function setPill(text){ livePill.textContent = "สถานะ: " + text; }
+    function setBtn(playing){
+      btnIcon.textContent = playing ? "⏸" : "▶";
+      btnText.textContent = playing ? "หยุด" : "เล่น";
+    }
 
-                // Update Next Track (Attempt from History/Next API if available, else standard fallback)
-                // Note: Standard status API often doesn't show next unless programmed. 
-                // We will simulate fetching the text from the provided script URL via a proxy or just using previous methods.
-                // Since we can't easily cross-origin fetch the script content to parse it, 
-                // and the status API doesn't always have 'next_track', we will leave the "Next Up" as generic or 
-                // try a specific endpoint if known. 
-                // For this demo, let's update it if the API provides it.
-                if (data.next_track) {
-                    document.getElementById('next-track-display').innerText = data.next_track.title;
-                } else {
-                    document.getElementById('next-track-display').innerText = "Upcoming Hits...";
-                }
+    async function fetchStatus(){
+      // ดึงข้อมูลสตรีมจาก Radio.co
+      const res = await fetch(statusUrl, { cache: "no-store" });
+      if(!res.ok) throw new Error("status not ok");
+      const data = await res.json();
 
-            } catch (error) {
-                console.error("Error fetching radio data:", error);
-            }
-        }
+      // หลายเจ้าจะส่ง stream_host หรือ streaming_host (เผื่อไว้)
+      const host = data.stream_host || data.streaming_host || data.streamHost;
+      if(!host) throw new Error("no stream_host");
 
-        // Initial Load & Interval
-        updateTrackInfo();
-        setInterval(updateTrackInfo, 10000); // Refresh every 10 seconds
+      streamUrl = `https://${host}/${STATION_ID}/listen`;
+      streamInfo.textContent = "Stream: " + streamUrl;
+      lastUpdate.textContent = "อัปเดตล่าสุด: " + new Date().toLocaleString("th-TH");
+      isReady = true;
+      setPill("พร้อมเล่น");
+      return data;
+    }
 
-        // --- REQUEST WIDGET INJECTION ---
-        // Injecting the user's request script into the iframe to ensure it renders correctly without breaking main DOM
-        const requestFrame = document.getElementById('request-iframe');
-        const requestDoc = requestFrame.contentWindow.document;
-        requestDoc.open();
-        requestDoc.write(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <style>
-                    body { margin: 0; padding: 0; background: #fff; font-family: sans-serif; }
-                </style>
-            </head>
-            <body>
-                <script src="https://embed.radio.co/request/w75f0bc0.js"><\/script>
-            </body>
-            </html>
-        `);
-        requestDoc.close();
+    async function ensureStream(){
+      if(isReady && streamUrl) return;
+      setPill("กำลังดึงลิงก์สตรีม…");
+      try{
+        await fetchStatus();
+        // ตั้ง src ให้ audio
+        audio.src = streamUrl;
+      }catch(err){
+        // ถ้าดึงไม่ได้ ให้เปิด fallback iframe
+        console.warn(err);
+        setPill("ใช้โหมดสำรอง (Player)");
+        fallbackWrap.style.display = "block";
+        // ยังอนุญาตให้ลองเล่นผ่าน audio ได้ (บางที fetch โดนบล็อก แต่ stream เล่นได้)
+      }
+    }
 
-    </script>
+    async function togglePlay(){
+      const isPlaying = !audio.paused && !audio.ended;
+
+      if(isPlaying){
+        audio.pause();
+        setBtn(false);
+        setPill("หยุดแล้ว");
+        return;
+      }
+
+      await ensureStream();
+
+      try{
+        if(!audio.src && streamUrl) audio.src = streamUrl;
+        await audio.play();
+        setBtn(true);
+        setPill("กำลังเล่นสด");
+      }catch(err){
+        // บางเบราว์เซอร์ต้องให้ผู้ใช้กดปุ่ม (เรากดแล้ว) แต่ถ้ายัง fail ก็ให้ใช้ fallback
+        console.warn(err);
+        setBtn(false);
+        setPill("เล่นไม่ได้ในโหมดนี้—ลองใช้ Player สำรอง");
+        fallbackWrap.style.display = "block";
+      }
+    }
+
+    playBtn.addEventListener("click", togglePlay);
+
+    audio.addEventListener("playing", () => setBtn(true));
+    audio.addEventListener("pause", () => setBtn(false));
+    audio.addEventListener("error", () => {
+      setBtn(false);
+      setPill("เกิดข้อผิดพลาดของสตรีม—ใช้ Player สำรอง");
+      fallbackWrap.style.display = "block";
+    });
+
+    // อัปเดตสถานะสตรีมเป็นระยะ (ไม่ไปยุ่งกับ song.js ของคุณ)
+    (async function boot(){
+      setBtn(false);
+      await ensureStream();
+      // รีเฟรช stream_host เผื่อมีการเปลี่ยน
+      setInterval(() => {
+        fetchStatus().catch(()=>{});
+      }, 60_000);
+    })();
+  </script>
 </body>
 </html>
