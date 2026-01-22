@@ -16,6 +16,9 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- Toastify CSS for Share Alerts -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
     <script>
         tailwind.config = {
             theme: {
@@ -69,15 +72,11 @@
             50% { height: 30px; }
         }
 
-        /* Override Radio.co injected styles to match theme */
-        .radioco-nowPlaying {
-            display: block;
-            font-family: 'Prompt', sans-serif;
-            font-weight: 900;
-            font-size: clamp(2rem, 5vw, 3.5rem); /* Responsive Font Size */
-            line-height: 1.1;
-            color: white;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #d1d1d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
@@ -96,9 +95,16 @@
             </div>
 
             <!-- Menu -->
-            <div class="flex items-center gap-6">
-                <a href="#player" class="text-sm font-bold hover:text-vibe-red transition-colors hidden sm:block">HOME</a>
-                <a href="#requests" class="text-sm font-bold hover:text-vibe-red transition-colors hidden sm:block">REQUESTS</a>
+            <div class="flex items-center gap-4 md:gap-6">
+                <!-- Notification Toggle -->
+                <button id="notify-btn" class="text-gray-400 hover:text-white transition-colors relative group" title="เปิดแจ้งเตือนเพลงใหม่">
+                    <i id="notify-icon" class="fas fa-bell-slash text-xl"></i>
+                    <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                        <span id="notify-dot" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-vibe-red opacity-0"></span>
+                        <span id="notify-dot-static" class="relative inline-flex rounded-full h-3 w-3 bg-vibe-red opacity-0"></span>
+                    </span>
+                </button>
+
                 <div class="flex items-center gap-2 bg-vibe-red/20 border border-vibe-red px-3 py-1 rounded-full">
                     <div class="w-2 h-2 bg-vibe-red rounded-full animate-ping"></div>
                     <span class="text-xs font-bold text-vibe-red tracking-wider">LIVE</span>
@@ -121,20 +127,32 @@
                 
                 <!-- Song Info -->
                 <div class="space-y-2 w-full">
-                    <h2 class="text-vibe-red font-bold text-sm tracking-[0.2em] uppercase flex items-center justify-center lg:justify-start gap-2">
+                    <div class="flex items-center justify-center lg:justify-start gap-2 text-vibe-red font-bold text-sm tracking-[0.2em] uppercase mb-2">
                         <i class="fas fa-music animate-bounce"></i> Now Playing
-                    </h2>
+                    </div>
                     
-                    <!-- Song Title (Live Script) -->
-                    <div class="min-h-[4rem]">
-                        <script src="https://embed.radio.co/embed/sbf4f79825/song.js"></script>
+                    <!-- Title & Artist (Separated) -->
+                    <div class="min-h-[8rem]">
+                        <h1 id="track-title" class="font-display font-black text-4xl md:text-6xl leading-tight text-white drop-shadow-lg mb-2">
+                            Loading...
+                        </h1>
+                        <h2 id="track-artist" class="font-medium text-xl md:text-2xl text-vibe-red tracking-wide">
+                            Please Wait
+                        </h2>
                     </div>
 
-                    <!-- Next Song (Live Script) -->
-                    <div class="mt-4 bg-white/5 backdrop-blur-sm border-l-4 border-vibe-red p-4 rounded-r-xl w-full max-w-lg mx-auto lg:mx-0">
+                    <!-- Action Buttons (Share) -->
+                    <div class="flex justify-center lg:justify-start gap-4 mt-4">
+                        <button id="share-btn" class="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full text-sm font-medium transition-all backdrop-blur-sm border border-white/10">
+                            <i class="fas fa-share-alt text-vibe-red"></i> Share Track
+                        </button>
+                    </div>
+
+                    <!-- Next Song -->
+                    <div class="mt-6 bg-white/5 backdrop-blur-sm border-l-4 border-vibe-red p-4 rounded-r-xl w-full max-w-lg mx-auto lg:mx-0">
                         <p class="text-xs text-gray-400 uppercase mb-1">Coming Up Next</p>
-                        <div class="font-medium text-lg text-gray-200 truncate">
-                            <script src="https://embed.radio.co/embed/sbf4f79825/next.js"></script>
+                        <div id="next-track" class="font-medium text-lg text-gray-200 truncate">
+                            Loading...
                         </div>
                     </div>
                 </div>
@@ -175,10 +193,9 @@
                     <!-- Vinyl Container -->
                     <div id="vinyl" class="relative w-full h-full rounded-full border-8 border-gray-900 bg-black shadow-2xl vinyl-spin vinyl-paused overflow-hidden flex items-center justify-center">
                         
-                        <!-- Artwork Script Container -->
-                        <!-- We use JS MutationObserver to style the IMG tag that this script injects -->
-                        <div id="artwork-container" class="w-full h-full bg-gray-900">
-                             <script src="https://embed.radio.co/embed/sbf4f79825/artwork.js"></script>
+                        <!-- Artwork -->
+                        <div class="w-full h-full bg-gray-900 overflow-hidden">
+                             <img id="track-artwork" src="https://img2.pic.in.th/1000074512.png" alt="Artwork" class="w-full h-full object-cover">
                         </div>
                         
                         <!-- Vinyl Center Hole -->
@@ -217,8 +234,11 @@
         <p>&copy; 2024 VIBE 24. All Rights Reserved.</p>
     </footer>
 
+    <!-- Toastify JS for Notifications -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
     <script>
-        // Visualizer Logic
+        // --- 1. Visualizer Logic ---
         const visualizer = document.getElementById('visualizer');
         for (let i = 0; i < 20; i++) {
             const bar = document.createElement('div');
@@ -228,15 +248,14 @@
             visualizer.appendChild(bar);
         }
 
-        // Player Logic
+        // --- 2. Player Logic ---
         const audio = document.getElementById('audio-stream');
         const playBtn = document.getElementById('play-btn');
         const playIcon = document.getElementById('play-icon');
         const vinyl = document.getElementById('vinyl');
         const volumeInput = document.getElementById('volume-input');
         const volumeBar = document.getElementById('volume-bar');
-        const artworkContainer = document.getElementById('artwork-container');
-
+        
         let isPlaying = false;
 
         playBtn.addEventListener('click', () => {
@@ -246,7 +265,6 @@
                 playIcon.classList.add('fa-play');
                 playIcon.classList.add('translate-x-1');
                 vinyl.classList.add('vinyl-paused');
-                // Stop visualizer bars
                 document.querySelectorAll('.bar').forEach(b => b.style.animationPlayState = 'paused');
             } else {
                 audio.play().then(() => {
@@ -254,46 +272,197 @@
                     playIcon.classList.remove('translate-x-1');
                     playIcon.classList.add('fa-pause');
                     vinyl.classList.remove('vinyl-paused');
-                    // Start visualizer bars
                     document.querySelectorAll('.bar').forEach(b => b.style.animationPlayState = 'running');
                     isPlaying = true;
                 }).catch(error => {
                     console.error("Playback failed:", error);
-                    // Usually due to browser autoplay policy or stream issues
+                    alert("ไม่สามารถเล่นเพลงได้ในขณะนี้ กรุณาลองใหม่");
                 });
             }
             isPlaying = !isPlaying;
         });
 
-        // Volume Logic
         volumeInput.addEventListener('input', (e) => {
             const val = e.target.value;
             audio.volume = val;
             volumeBar.style.width = (val * 100) + '%';
         });
 
-        // Initialize Paused State
         document.querySelectorAll('.bar').forEach(b => b.style.animationPlayState = 'paused');
 
-        // *** Artwork Styler ***
-        // Radio.co script inserts an <img> tag. We need to force it to be round and responsive.
-        // We use MutationObserver to watch for when the script adds the image.
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.addedNodes.length) {
-                    const img = artworkContainer.querySelector('img');
-                    if (img) {
-                        img.style.width = '100%';
-                        img.style.height = '100%';
-                        img.style.objectFit = 'cover';
-                        img.style.borderRadius = '50%';
-                        // Optional: Add specific ID or class if Radio.co doesn't provide one
-                    }
+
+        // --- 3. Smart Data Fetching (Separate Title/Artist & Notifications) ---
+        const STATION_ID = 'sbf4f79825'; 
+        const API_URL = `https://public.radio.co/stations/${STATION_ID}/status`;
+        
+        const uiTitle = document.getElementById('track-title');
+        const uiArtist = document.getElementById('track-artist');
+        const uiArtwork = document.getElementById('track-artwork');
+        const uiNext = document.getElementById('next-track');
+
+        let lastTrackTitle = "";
+        let notificationsEnabled = false;
+
+        async function updateTrackInfo() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                
+                const currentTrack = data.current_track;
+                const nextTrack = data.next_track;
+                const history = data.history;
+
+                // Split Title logic: Usually Radio.co sends "Artist - Title" in the title field if no explicit artist is set, 
+                // BUT the API usually provides specific fields if available. 
+                // Standard Radio.co structure: title: "Song Name - Artist Name" (often combined)
+                // Let's try to split intelligently.
+                
+                let rawTitle = currentTrack.title;
+                let displayTitle = rawTitle;
+                let displayArtist = "VIBE 24"; // Default
+                let displayArtwork = currentTrack.artwork_url_large || currentTrack.artwork_url || "https://img2.pic.in.th/1000074512.png";
+
+                if (rawTitle.includes(" - ")) {
+                    const parts = rawTitle.split(" - ");
+                    // Usually "Artist - Title" standard in radio metadata
+                    displayArtist = parts[0]; 
+                    displayTitle = parts.slice(1).join(" - ");
+                } else {
+                    // Sometimes artist is separate?
+                    // Use a fallback if just one string
+                    displayTitle = rawTitle;
                 }
-            });
+
+                // Update UI
+                uiTitle.textContent = displayTitle;
+                uiArtist.textContent = displayArtist;
+                uiArtwork.src = displayArtwork;
+                
+                // Update Next Track
+                uiNext.textContent = nextTrack ? nextTrack.title : "Coming Soon...";
+
+                // Handle Notification
+                if (rawTitle !== lastTrackTitle) {
+                    if (notificationsEnabled && lastTrackTitle !== "") {
+                        sendNotification(displayTitle, displayArtist, displayArtwork);
+                    }
+                    lastTrackTitle = rawTitle;
+                }
+
+            } catch (error) {
+                console.error("Error fetching track info:", error);
+                // Fallback to basic text if API fails
+                uiTitle.textContent = "VIBE 24";
+                uiArtist.textContent = "Hits Non-Stop";
+            }
+        }
+
+        // Poll API every 10 seconds
+        updateTrackInfo();
+        setInterval(updateTrackInfo, 10000);
+
+
+        // --- 4. Notification System ---
+        const notifyBtn = document.getElementById('notify-btn');
+        const notifyIcon = document.getElementById('notify-icon');
+        const notifyDot = document.getElementById('notify-dot');
+        const notifyDotStatic = document.getElementById('notify-dot-static');
+
+        notifyBtn.addEventListener('click', () => {
+            if (!("Notification" in window)) {
+                alert("เบราว์เซอร์ของคุณไม่รองรับการแจ้งเตือน");
+                return;
+            }
+
+            if (Notification.permission === "granted") {
+                toggleNotificationState();
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        toggleNotificationState();
+                        new Notification("VIBE 24", {
+                            body: "เปิดการแจ้งเตือนเรียบร้อยแล้ว!",
+                            icon: "https://img2.pic.in.th/1000074512.png"
+                        });
+                    }
+                });
+            }
         });
 
-        observer.observe(artworkContainer, { childList: true, subtree: true });
+        function toggleNotificationState() {
+            notificationsEnabled = !notificationsEnabled;
+            if (notificationsEnabled) {
+                notifyIcon.className = "fas fa-bell text-xl text-vibe-red";
+                notifyDot.classList.remove('opacity-0');
+                notifyDotStatic.classList.remove('opacity-0');
+                
+                Toastify({
+                    text: "เปิดการแจ้งเตือนเพลงใหม่แล้ว",
+                    backgroundColor: "#E31E24",
+                    gravity: "bottom", 
+                    position: "right", 
+                    duration: 3000
+                }).showToast();
+            } else {
+                notifyIcon.className = "fas fa-bell-slash text-xl";
+                notifyDot.classList.add('opacity-0');
+                notifyDotStatic.classList.add('opacity-0');
+                
+                Toastify({
+                    text: "ปิดการแจ้งเตือนแล้ว",
+                    backgroundColor: "#333",
+                    gravity: "bottom", 
+                    position: "right", 
+                    duration: 3000
+                }).showToast();
+            }
+        }
+
+        function sendNotification(title, artist, icon) {
+            if (document.hidden) { // Only notify if user is not looking at the tab (optional preference)
+                const n = new Notification(title, {
+                    body: `By ${artist} on VIBE 24`,
+                    icon: icon
+                });
+                // Close after 5 seconds
+                setTimeout(() => n.close(), 5000);
+            }
+        }
+
+
+        // --- 5. Share Functionality ---
+        const shareBtn = document.getElementById('share-btn');
+        
+        shareBtn.addEventListener('click', async () => {
+            const trackName = uiTitle.textContent;
+            const artistName = uiArtist.textContent;
+            const shareData = {
+                title: 'VIBE 24 - Hits Non-Stop',
+                text: `กำลังฟังเพลง ${trackName} ของ ${artistName} ที่ VIBE 24!`,
+                url: window.location.href
+            };
+
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                } catch (err) {
+                    console.error('Share failed:', err);
+                }
+            } else {
+                // Fallback: Copy to clipboard
+                navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`).then(() => {
+                    Toastify({
+                        text: "คัดลอกลิงก์เรียบร้อยแล้ว!",
+                        backgroundColor: "linear-gradient(to right, #E31E24, #ff4b4b)",
+                        className: "info",
+                        gravity: "bottom", 
+                        position: "center", 
+                        duration: 3000
+                    }).showToast();
+                });
+            }
+        });
+
     </script>
 </body>
 </html>
